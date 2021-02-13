@@ -10,15 +10,11 @@ A highly configurable module for displaying domoticz information en performing a
 * Weather information
 
 
-
-
-
 ## Installation
 
 1. Navigate into your MagicMirror `modules` folder and execute<br>
 `git clone https://github.com/goedh452/MMM-Domoticz-ext.git`.
 2. Add the module to you config (see below)
-
 
 
 ## Configuration
@@ -62,23 +58,21 @@ A highly configurable module for displaying domoticz information en performing a
 
 
 ## Sample Configuration
+### Minimal configuration
 
 ```
 {
-  module: "MMM-DarkSkyForecast",
-  header: "Weather",
-  position: "top_right",
-  classes: "default everyone",
-  disabled: false,
-  config: {
-    apikey: "SUPER SECRET!!!",
-    latitude: "51.506130",
-    longitude: "-0.090270",      
-    iconset: "4c",
-    concise: false,
-    forecastLayout: "table"
-  }
-},
+  module: "MMM-Domoticz-ext",
+  header: "Domoticz",
+  position: "bottom_left",
+	config: {
+    apiBase: "192.168.1.114",
+  	apiPort: "8081",
+    rooms: [
+      {	idx: "11" }
+    ]
+    }
+  },
 ```
 
 ## Screenshots
