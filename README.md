@@ -96,7 +96,6 @@ With the config parameter `alwaysShowActions` it is possible to always display t
 | `motionIcon` | Icon for motion | `running` |
 | `luxIcon` | Icon for lux | `sun` |
 | `usageIcon` | Icon for energy usage | `tachometer-alt` |
-| `barometerIcon` | Icon for barometer | `cloud-upload-alt` |
 | `rainIcon` | Icon for rain | `cloud-rain` |
 | `rooms` | Rooms to display the devices of; see below for config | N/A |
 | `floors` | Group rooms by floor; see below for config | N/A |
@@ -109,23 +108,31 @@ With the config parameter `alwaysShowActions` it is possible to always display t
 ### Rooms
 | Key | Description | Default |
 | --- | --- | --- |
-| `accessory` | Must be `HarmonyTV` | N/A |
-| `name` | Name to appear in the Home app | N/A |
-| `connection` | Must be `http` (for now) | `http` |
+| `idx` | IDX of room | N/A |
+| `name` | Default the room name in Domoticz is used. Use this parameter to override this. | Room name in Domoticz |
 
 ### Floors
 | Key | Description | Default |
 | --- | --- | --- |
-| `accessory` | Must be `HarmonyTV` | N/A |
-| `name` | Name to appear in the Home app | N/A |
-| `connection` | Must be `http` (for now) | `http` |
+| `name` | Name of the floor | N/A |
+| `rooms` | Array of room IDX's | N/A |
 
 ### Utilities
 | Key | Description | Default |
 | --- | --- | --- |
-| `accessory` | Must be `HarmonyTV` | N/A |
-| `name` | Name to appear in the Home app | N/A |
-| `connection` | Must be `http` (for now) | `http` |
+| `devices` | Array of device IDS's | N/A |
+| `utilityLabel` | Header for the utilities layout | `Utilities` |
+| `usageLabel` | Label voor energy usage | `Usage` |
+| `gaugeWidth` | Width of the gauge element | `250` |
+| `counterTodayLabel` | Label voor counters | `Today` |
+| `gaugeEnergyMinValue` | Minimum value of the gauge for enegry usage (supports return) | `-3000` |
+| `gaugeEnergyMaxValue` | Minimum value of the gauge for enegry usage | `3000` |
+| `gaugeEnergyAppendText` | Text to append to the gauge value | `Watt` |
+| `gaugeGasMaxValue` | Maximum value for gas gauge based on daily usage | `25` |
+| `gaugeGasAppendText` | Text to append to the gas gauge value | `m3` |
+| `gaugeWaterMaxValue` | Maximum value for water gauge based on daily usage | `1500` |
+| `gaugeWaterAppendText` | Text to append to the water gauge value | `liter` |
+| `useColors` | Use colors in the utility layout | `http` |
 
 ### Weather
 | Key | Description | Default |
