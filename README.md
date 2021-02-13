@@ -65,14 +65,14 @@ A highly configurable module for displaying domoticz information en performing a
   module: "MMM-Domoticz-ext",
   header: "Domoticz",
   position: "bottom_left",
-	config: {
+  config: {
     apiBase: "192.168.1.114",
-  	apiPort: "8081",
+    apiPort: "8081",
     rooms: [
-      {	idx: "11" }
+      { idx: "11" }
     ]
-    }
-  },
+  }
+},
 ```
 
 ## Screenshots
