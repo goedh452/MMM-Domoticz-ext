@@ -24,13 +24,13 @@ A highly configurable module for displaying domoticz information and performing 
 
 ### Display types
 The module has the ability to show information in several ways, mostly controlled by the config parameter 'DisplayType':
-* All: display a list of all devices and their states
-* Type: group devices by type (switches, dimmers,  motion, etc.) and show their states combined
-* Room: display a list of devices and their states per room
-* Both: group devices by type and display their combined states per room
-* Floor: group devices by type and display their combined states per floor
-* Dashboard: display an icon based summary of the device types and their states combined
-* Actions: display a set op action buttons to perform actions on Domoticz
+* `All`: display a list of all devices and their states
+* `Type`: group devices by type (switches, dimmers,  motion, etc.) and show their states combined
+* `Room`: display a list of devices and their states per room
+* `Both`: group devices by type and display their combined states per room
+* `Floor`: group devices by type and display their combined states per floor
+* `Dashboard`: display an icon based summary of the device types and their states combined
+* `Actions`: display a set op action buttons to perform actions on Domoticz
 
 If your magic mirror has touch cappability, it is possible to show buttons with the config paramater `showButtons`. Setting this to `true` makes it possible to switch between display types by pressing the buttons.
 
