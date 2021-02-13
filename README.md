@@ -68,7 +68,7 @@ With the config parameter `alwaysShowActions` it is possible to always display t
 | `dashboardColumnCount` | Number of columns for the dashboard | `4` |
 | `showIcons` | Show icons | `true` |
 | `coloredIcons` | Show colored icons when e.g. a lamp is on | `true` |
-| `maxTitleLength` | Maximum numer of characters for strings; longer string get truncated | `100` |
+| `maxTitleLength` | Maximum numer of characters for strings; longer strings get truncated | `100` |
 | `switchLabel` | Label for switches when in a grouped layout | `Switches on` |
 | `dimmerLabel` | Label for dimmers when in a grouped layout | `Dimmers on` |
 | `contactLabel` | Label for contacts when in a grouped layout| `Contacts open` |
@@ -81,7 +81,7 @@ With the config parameter `alwaysShowActions` it is possible to always display t
 | `motionLabel` | Label for motion when in a grouped layout | `Motion detected` |
 | `luxLabel` | Label for lux when in a grouped layout | `Avg. Lux level` |
 | `usageLabel` | Label for energy usage when in a grouped layout | `Usage` |
-| `showTotals` | Show the total numer of devices in a grouped layout (4/11 indicates 4 out of 11 lamps are on) | `true` |
+| `showTotals` | Show the total number of devices in a grouped layout (4/11 indicates 4 out of 11 lamps are on) | `true` |
 | `switchIcon` | Icon for switches | `adjust` |
 | `dimmerIcon` | Icon for dimmers | `lightbulb` |
 | `contactIcon` | Icon for contacts | `th-large` |
@@ -103,13 +103,13 @@ With the config parameter `alwaysShowActions` it is possible to always display t
 | `utilities` | Show utility gauges; see below for config | N/A |
 | `weather` | Show weather gauges; see below for config | N/A |
 | `actions` | Show buttons to perform actions on Domoticz; see below for config | N/A |
-| `excludedDevices` | Array of IDX's of devices that should be ignored by the module. The array expectes strings. | N/A |
+| `excludedDevices` | Array of IDX's of devices that should be ignored by the module. The array expects strings. | N/A |
 
 ### Rooms
 | Key | Description | Default |
 | --- | --- | --- |
 | `idx` | IDX of room | N/A |
-| `name` | Default the room name in Domoticz is used. Use this parameter to override this. | Room name in Domoticz |
+| `name` | Default the room name in Domoticz is used. Use this parameter to override and set your desired name. | Room name in Domoticz |
 
 ### Floors
 | Key | Description | Default |
@@ -120,17 +120,17 @@ With the config parameter `alwaysShowActions` it is possible to always display t
 ### Utilities
 | Key | Description | Default |
 | --- | --- | --- |
-| `devices` | Array of device IDS's | N/A |
+| `devices` | Array of device IDX's | N/A |
 | `utilityLabel` | Header for the utilities layout | `Utilities` |
-| `usageLabel` | Label voor energy usage | `Usage` |
+| `usageLabel` | Label for energy usage | `Usage` |
 | `gaugeWidth` | Width of the gauge element | `250` |
 | `counterTodayLabel` | Label voor counters | `Today` |
 | `gaugeEnergyMinValue` | Minimum value of the gauge for enegry usage (supports return) | `-3000` |
-| `gaugeEnergyMaxValue` | Minimum value of the gauge for enegry usage | `3000` |
+| `gaugeEnergyMaxValue` | Maximum value of the gauge for enegry usage | `3000` |
 | `gaugeEnergyAppendText` | Text to append to the gauge value | `Watt` |
-| `gaugeGasMaxValue` | Maximum value for gas gauge based on daily usage | `25` |
+| `gaugeGasMaxValue` | Maximum value for gas gauge based on daily usage. Gauge starts at 0. | `25` |
 | `gaugeGasAppendText` | Text to append to the gas gauge value | `m3` |
-| `gaugeWaterMaxValue` | Maximum value for water gauge based on daily usage | `1500` |
+| `gaugeWaterMaxValue` | Maximum value for water gauge based on daily usage. Gauge starts at 0. | `1500` |
 | `gaugeWaterAppendText` | Text to append to the water gauge value | `liter` |
 | `useColors` | Use colors in the utility layout | `true` |
 
@@ -140,7 +140,7 @@ With the config parameter `alwaysShowActions` it is possible to always display t
 | `devices` | Array of weather devices | N/A |
 | `weatherLabel` | Header for the weather layout | N/A |
 | `gaugeWidth` | Width of the gauge element | `250` |
-| `gaugeWindAppendText` | Text to append to the wind gauge value | `m/s` |
+| `gaugeWindAppendText` | Text to append to the wind gauge value | `km/h` |
 | `rainSuffix` | Text to append to the rain value | `mm` |
 | `barometerSuffix` | Text to append to the barometer value | `hPa` |
 
