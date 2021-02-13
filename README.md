@@ -54,7 +54,7 @@ With the config parameter `alwaysShowActions` it is possible to always display t
 | `displayType` | Set layout for the module (see above for possible values) | `both` |
 | `alwaysShowDashboard` | Always show the dashboard at the top | `false` |
 | `alwaysShowActions` | Always show action buttons at the bottom | `true` |
-| `dashboardPageSelect` | Integration which [MMM-Page-Selector](https://github.com/Veldrovive/MMM-Page-Selector). Name of the page to switch to when dashboard is clicked.  | `http` |
+| `dashboardPageSelect` | Integration which [MMM-Page-Selector](https://github.com/Veldrovive/MMM-Page-Selector). Name of the page to switch to when dashboard is clicked.  | N/A |
 | `showButtons` | Show buttons to switch between layouts | `false` |
 | `buttonsRight` | Buttons are displayed right instead of at the bottom of the module | `false` |
 | `buttonAllLabel` | Label for layout button All | `All` |
