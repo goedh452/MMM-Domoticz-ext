@@ -47,64 +47,64 @@ With the config parameter `alwaysShowActions` it is possible to always display t
 ### Config
 | Key | Description | Default |
 | --- | --- | --- |
-| `apiBase` | Must be `HarmonyTV` | N/A |
-| `apiPort` | Name to appear in the Home app | N/A |
-| `updateInterval` | Must be `http` (for now) | `http` |
-| `animationSpeed` | Must be `http` (for now) | `http` |
-| `displayType` | Must be `http` (for now) | `http` |
-| `alwaysShowDashboard` | Must be `http` (for now) | `http` |
-| `alwaysShowActions` | Must be `http` (for now) | `http` |
-| `dashboardPageSelect` | Must be `http` (for now) | `http` |
-| `showButtons` | Must be `http` (for now) | `http` |
-| `buttonsRight` | Must be `http` (for now) | `http` |
-| `buttonAllLabel` | Must be `http` (for now) | `http` |
-| `buttonTypeLabel` | Must be `http` (for now) | `http` |
-| `buttonRoomLabel` | Must be `http` (for now) | `http` |
-| `buttonBothLabel` | Must be `http` (for now) | `http` |
-| `buttonFloorLabel` | Must be `http` (for now) | `http` |
-| `buttonDashboardLabel` | Must be `http` (for now) | `http` |
-| `horizontal` | Must be `http` (for now) | `http` |
-| `columnCount` | Must be `http` (for now) | `http` |
-| `dashboardColumnCount` | Must be `http` (for now) | `http` |
-| `showIcons` | Must be `http` (for now) | `http` |
-| `coloredIcons` | Must be `http` (for now) | `http` |
-| `maxTitleLength` | Must be `http` (for now) | `http` |
-| `switchLabel` | Must be `http` (for now) | `http` |
-| `dimmerLabel` | Must be `http` (for now) | `http` |
-| `contactLabel` | Must be `http` (for now) | `http` |
-| `doorContactLabel` | Must be `http` (for now) | `http` |
-| `doorLockLabel` | Must be `http` (for now) | `http` |
-| `temperatureLabel` | Must be `http` (for now) | `http` |
-| `humidityLabel` | Must be `http` (for now) | `http` |
-| `blindsLabel` | Must be `http` (for now) | `http` |
-| `blindsInvertedLabel` | Must be `http` (for now) | `http` |
-| `motionLabel` | Must be `http` (for now) | `http` |
-| `luxLabel` | Must be `http` (for now) | `http` |
-| `usageLabel` | Must be `http` (for now) | `http` |
-| `showTotals` | Must be `http` (for now) | `http` |
-| `switchIcon` | Must be `http` (for now) | `http` |
-| `dimmerIcon` | Must be `http` (for now) | `http` |
-| `contactIcon` | Must be `http` (for now) | `http` |
-| `doorContactIcon` | Must be `http` (for now) | `http` |
-| `doorContactOpenIcon` | Must be `http` (for now) | `http` |
-| `lockIcon` | Must be `http` (for now) | `http` |
-| `unlockedIcon` | Must be `http` (for now) | `http` |
-| `temperatureIcon` | Must be `http` (for now) | `http` |
-| `humidityIcon` | Must be `http` (for now) | `http` |
-| `blindsIcon` | Must be `http` (for now) | `http` |
-| `blindsInvertedIcon` | Must be `http` (for now) | `http` |
-| `motionIcon` | Must be `http` (for now) | `http` |
-| `luxIcon` | Must be `http` (for now) | `http` |
-| `usageIcon` | Must be `http` (for now) | `http` |
-| `barometerIcon` | Must be `http` (for now) | `http` |
-| `rainIcon` | Must be `http` (for now) | `http` |
-| `rooms` | Must be `http` (for now) | `http` |
-| `floors` | Must be `http` (for now) | `http` |
-| `dashboardRooms` | Must be `http` (for now) | `http` |
-| `utilities` | Must be `http` (for now) | `http` |
-| `weather` | Must be `http` (for now) | `http` |
-| `actions` | Must be `http` (for now) | `http` |
-| `excludedDevices` | Must be `http` (for now) | `http` |
+| `apiIP` | IP address of Harmony API server | N/A |
+| `apiPort` | Port of Harmony API server | N/A |
+| `pollingInterval` | Time seconds between status checks (if you have a lot of devices, do not set this value too low | `10` |
+| `timeOut` | Time (in ms) until the accessory will be marked as Not Responding | `5000` |
+| `displayType` | Different layout for the module (see above for possible values) | `both` |
+| `alwaysShowDashboard` | Always show the dashboard | `false` |
+| `alwaysShowActions` | Always show action buttons | `true` |
+| `dashboardPageSelect` | Integration which [MMM-Page-Selector](https://github.com/Veldrovive/MMM-Page-Selector). Name of the page to switch to when dashboard is clicked.  | `http` |
+| `showButtons` | Show buttons to switch between layouts | `false` |
+| `buttonsRight` | Buttons are displayed right instead of at the bottom of the module | `false` |
+| `buttonAllLabel` | Label for layout button All | `All` |
+| `buttonTypeLabel` | Label for layout button Type | `Type` |
+| `buttonRoomLabel` | Label for layout button Room | `Room` |
+| `buttonBothLabel` | Label for layout button Both | `Both` |
+| `buttonFloorLabel` | Label for layout button Floor | `Floor` |
+| `buttonDashboardLabel` | Label for layout button Dashboard | `Dashboard` |
+| `horizontal` | Display rooms/floors horizontally | `false` |
+| `columnCount` | Number of columns for horizontal layout | `3` |
+| `dashboardColumnCount` | Number of columns for the dashboard | `4` |
+| `showIcons` | Show icons | `true` |
+| `coloredIcons` | Show colored icons when e.g. a lamp is on | `true` |
+| `maxTitleLength` | Maximum numer of characters for strings; longer string get truncated | `100` |
+| `switchLabel` | Label for switches when in a grouped layout | `Switches on` |
+| `dimmerLabel` | Label for dimmers when in a grouped layout | `Dimmers on` |
+| `contactLabel` | Label for contacts when in a grouped layout| `Contacts open` |
+| `doorContactLabel` | Label for door contacts when in a grouped layout | `Doors open` |
+| `doorLockLabel` | Label for door locks when in a grouped layout | `Doors unlocked` |
+| `temperatureLabel` | Label for temperatures when in a grouped layout | `Avg. temperature` |
+| `humidityLabel` | Label for humidity when in a grouped layout | `Avg. humidity` |
+| `blindsLabel` |  Label for blinds when in a grouped layout | `Blinds open` |
+| `blindsInvertedLabel` | Label for blinds inverted when in a grouped layout | `Blinds closed` |
+| `motionLabel` | Label for motion when in a grouped layout | `Motion detected` |
+| `luxLabel` | Label for lux when in a grouped layout | `Avg. Lux level` |
+| `usageLabel` | Label for energy usage when in a grouped layout | `Usage` |
+| `showTotals` | Show the total numer of devices in a grouped layout (4/11 indicates 4 out of 11 lamps are on) | `true` |
+| `switchIcon` | Icon for switches | `adjust` |
+| `dimmerIcon` | Icon for dimmers | `lightbulb` |
+| `contactIcon` | Icon for contacts | `th-large` |
+| `doorContactIcon` | Icon for door contacts | `door-closed` |
+| `doorContactOpenIcon` | Icon for door contacts that are open | `door-open` |
+| `lockIcon` | Icon for locks | `lock` |
+| `unlockedIcon` | Icon for locks that are unlocked | `unlock-alt` |
+| `temperatureIcon` | Icon for temperature | `thermometer-half` |
+| `humidityIcon` | Icon for humidity| `water` |
+| `blindsIcon` | Icon for blinds | `memory` |
+| `blindsInvertedIcon` | Icon for blinds inverted | `align-justify` |
+| `motionIcon` | Icon for motion | `running` |
+| `luxIcon` | Icon for lux | `sun` |
+| `usageIcon` | Icon for energy usage | `tachometer-alt` |
+| `barometerIcon` | Icon for barometer | `cloud-upload-alt` |
+| `rainIcon` | Icon for rain | `cloud-rain` |
+| `rooms` | Rooms to display the devices of; see below for config | N/A |
+| `floors` | Group rooms by floor; see below for config | N/A |
+| `dashboardRooms` | Array of rooms to display in the dashboard. When empty the 'rooms' parameter is used. | N/A |
+| `utilities` | Show utility gauges; see below for config | N/A |
+| `weather` | Show weather gauges; see below for config | N/A |
+| `actions` | Show buttons to perform actions on Domoticz; see below for config | N/A |
+| `excludedDevices` | Array of IDX's of devices that should be ignored by the module. The array expectes strings. | N/A |
 
 ### Rooms
 | Key | Description | Default |
