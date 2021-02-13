@@ -132,23 +132,23 @@ With the config parameter `alwaysShowActions` it is possible to always display t
 | `gaugeGasAppendText` | Text to append to the gas gauge value | `m3` |
 | `gaugeWaterMaxValue` | Maximum value for water gauge based on daily usage | `1500` |
 | `gaugeWaterAppendText` | Text to append to the water gauge value | `liter` |
-| `useColors` | Use colors in the utility layout | `http` |
+| `useColors` | Use colors in the utility layout | `true` |
 
 ### Weather
 | Key | Description | Default |
 | --- | --- | --- |
-| `accessory` | Must be `HarmonyTV` | N/A |
-| `name` | Name to appear in the Home app | N/A |
-| `connection` | Must be `http` (for now) | `http` |
+| `devices` | Array of weather devices | N/A |
+| `weatherLabel` | Header for the weather layout | N/A |
+| `gaugeWidth` | Width of the gauge element | `250` |
+| `gaugeWindAppendText` | Text to append to the wind gauge value | `m/s` |
+| `rainSuffix` | Text to append to the rain value | `mm` |
+| `barometerSuffix` | Text to append to the barometer value | `hPa` |
 
 ### Actions
 | Key | Description | Default |
 | --- | --- | --- |
-| `accessory` | Must be `HarmonyTV` | N/A |
-| `name` | Name to appear in the Home app | N/A |
-| `connection` | Must be `http` (for now) | `http` |
-
-
+| `label` | Button label | N/A |
+| `url` | Domoticz URL to call | N/A |
 
 
 ## Sample Configuration
