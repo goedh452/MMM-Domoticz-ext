@@ -51,9 +51,9 @@ With the config parameter `alwaysShowActions` it is possible to always display t
 | `apiPort` | Domoticz port | N/A |
 | `updateInterval` | Time seconds between status checks (if you have a lot of devices, do not set this value too low | `10` |
 | `animationSpeed` | Time fade-out/fade-in when DOM is refreshed. With many updates, 0 is the best value. | `0` |
-| `displayType` | Different layout for the module (see above for possible values) | `both` |
-| `alwaysShowDashboard` | Always show the dashboard | `false` |
-| `alwaysShowActions` | Always show action buttons | `true` |
+| `displayType` | Set layout for the module (see above for possible values) | `both` |
+| `alwaysShowDashboard` | Always show the dashboard at the top | `false` |
+| `alwaysShowActions` | Always show action buttons at the bottom | `true` |
 | `dashboardPageSelect` | Integration which [MMM-Page-Selector](https://github.com/Veldrovive/MMM-Page-Selector). Name of the page to switch to when dashboard is clicked.  | `http` |
 | `showButtons` | Show buttons to switch between layouts | `false` |
 | `buttonsRight` | Buttons are displayed right instead of at the bottom of the module | `false` |
