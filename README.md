@@ -47,10 +47,10 @@ With the config parameter `alwaysShowActions` it is possible to always display t
 ### Config
 | Key | Description | Default |
 | --- | --- | --- |
-| `apiIP` | IP address of Harmony API server | N/A |
-| `apiPort` | Port of Harmony API server | N/A |
-| `pollingInterval` | Time seconds between status checks (if you have a lot of devices, do not set this value too low | `10` |
-| `timeOut` | Time (in ms) until the accessory will be marked as Not Responding | `5000` |
+| `apiIP` | IP address of Domoticz | N/A |
+| `apiPort` | Domoticz port | N/A |
+| `updateInterval` | Time seconds between status checks (if you have a lot of devices, do not set this value too low | `10` |
+| `animationSpeed` | Time fade-out/fade-in when DOM is refreshed. With many updates, 0 is the best value. | `0` |
 | `displayType` | Different layout for the module (see above for possible values) | `both` |
 | `alwaysShowDashboard` | Always show the dashboard | `false` |
 | `alwaysShowActions` | Always show action buttons | `true` |
