@@ -83,22 +83,22 @@ A highly configurable module for displaying domoticz information en performing a
 
 ## Screenshots
 ### Overview
-![Overview](overview.png?raw=true "Overview")
+![Overview](screenshots/overview.png?raw=true "Overview")
 
 ### Dashboard
-![Dashboard](dashboard.png?raw=true "Dashboard")
+![Dashboard](screenshots/dashboard.png?raw=true "Dashboard")
 
 ### Floor
-![Floor](floor.png?raw=true "Floor")
+![Floor](screenshots/floor.png?raw=true "Floor")
 
 ### Room and type
-![Room and type](room_type.png?raw=true "Room and type")
+![Room and type](screenshots/room_type.png?raw=true "Room and type")
 
 ### Utilities
-![Utilities](utilities.png?raw=true "Utilities")
+![Utilities](screenshots/utilities.png?raw=true "Utilities")
 
 ### Weather
-![Weather](weather.png?raw=true "Weather")
+![Weather](screenshots/weather.png?raw=true "Weather")
 
 
 
