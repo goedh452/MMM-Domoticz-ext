@@ -4,10 +4,13 @@ This a module for <strong>MagicMirror</strong><br>
 https://magicmirror.builders/<br>
 https://github.com/MichMich/MagicMirror
 
-A highly configurable module for displaying domoticz information en performing actions on Domoticz. The following information can be displayed:
+A highly configurable module for displaying domoticz information and performing actions on Domoticz. The module contains the following functionality:
 * Switch states per room, type, both or floor
 * Utility information
 * Weather information
+* Buttons to change overview
+* Action buttons to perform actions on domoticz
+* Integration with [MMM-Page-Selector](https://github.com/Veldrovive/MMM-Page-Selector)
 
 
 ## Installation
@@ -20,6 +23,13 @@ A highly configurable module for displaying domoticz information en performing a
 ## Configuration
 
 ### Default
+| Key | Description | Default |
+| --- | --- | --- |
+| `module` | Must be `HarmonyTV` | N/A |
+| `header` | Name to appear in the Home app | N/A |
+| `position` | Must be `http` (for now) | `http` |
+
+### Config
 | Key | Description | Default |
 | --- | --- | --- |
 | `accessory` | Must be `HarmonyTV` | N/A |
