@@ -10,7 +10,7 @@ A highly configurable module for displaying domoticz information and performing 
 * Weather information
 * Buttons to change overview
 * Action buttons to perform actions on domoticz
-* Integration with [MMM-Page-Selector](https://github.com/Veldrovive/MMM-Page-Selector)
+* Integration with touch screen and [MMM-Page-Selector](https://github.com/Veldrovive/MMM-Page-Selector)
 
 
 ## Installation
@@ -25,17 +25,78 @@ A highly configurable module for displaying domoticz information and performing 
 ### Default
 | Key | Description | Default |
 | --- | --- | --- |
-| `module` | Must be `HarmonyTV` | N/A |
-| `header` | Name to appear in the Home app | N/A |
-| `position` | Must be `http` (for now) | `http` |
+| `module` | Must be `MMM-Domoticz-ext` | N/A |
+| `header` | Name to appear as the header of the module | N/A |
+| `position` | Position of the module | N/A |
 
 ### Config
+| Key | Description | Default |
+| --- | --- | --- |
+| `apiBase` | Must be `HarmonyTV` | N/A |
+| `apiPort` | Name to appear in the Home app | N/A |
+| `updateInterval` | Must be `http` (for now) | `http` |
+| `animationSpeed` | Must be `http` (for now) | `http` |
+| `displayType` | Must be `http` (for now) | `http` |
+| `alwaysShowDashboard` | Must be `http` (for now) | `http` |
+| `alwaysShowActions` | Must be `http` (for now) | `http` |
+| `dashboardPageSelect` | Must be `http` (for now) | `http` |
+| `showButtons` | Must be `http` (for now) | `http` |
+| `buttonsRight` | Must be `http` (for now) | `http` |
+| `buttonAllLabel` | Must be `http` (for now) | `http` |
+| `buttonTypeLabel` | Must be `http` (for now) | `http` |
+| `buttonRoomLabel` | Must be `http` (for now) | `http` |
+| `buttonBothLabel` | Must be `http` (for now) | `http` |
+| `buttonFloorLabel` | Must be `http` (for now) | `http` |
+| `buttonDashboardLabel` | Must be `http` (for now) | `http` |
+| `horizontal` | Must be `http` (for now) | `http` |
+| `columnCount` | Must be `http` (for now) | `http` |
+| `dashboardColumnCount` | Must be `http` (for now) | `http` |
+| `showIcons` | Must be `http` (for now) | `http` |
+| `coloredIcons` | Must be `http` (for now) | `http` |
+| `maxTitleLength` | Must be `http` (for now) | `http` |
+| `switchLabel` | Must be `http` (for now) | `http` |
+| `dimmerLabel` | Must be `http` (for now) | `http` |
+| `contactLabel` | Must be `http` (for now) | `http` |
+| `doorContactLabel` | Must be `http` (for now) | `http` |
+| `doorLockLabel` | Must be `http` (for now) | `http` |
+| `temperatureLabel` | Must be `http` (for now) | `http` |
+| `humidityLabel` | Must be `http` (for now) | `http` |
+| `blindsLabel` | Must be `http` (for now) | `http` |
+| `blindsInvertedLabel` | Must be `http` (for now) | `http` |
+| `motionLabel` | Must be `http` (for now) | `http` |
+| `luxLabel` | Must be `http` (for now) | `http` |
+| `usageLabel` | Must be `http` (for now) | `http` |
+| `showTotals` | Must be `http` (for now) | `http` |
+| `switchIcon` | Must be `http` (for now) | `http` |
+| `dimmerIcon` | Must be `http` (for now) | `http` |
+| `contactIcon` | Must be `http` (for now) | `http` |
+| `doorContactIcon` | Must be `http` (for now) | `http` |
+| `doorContactOpenIcon` | Must be `http` (for now) | `http` |
+| `lockIcon` | Must be `http` (for now) | `http` |
+| `unlockedIcon` | Must be `http` (for now) | `http` |
+| `temperatureIcon` | Must be `http` (for now) | `http` |
+| `humidityIcon` | Must be `http` (for now) | `http` |
+| `blindsIcon` | Must be `http` (for now) | `http` |
+| `blindsInvertedIcon` | Must be `http` (for now) | `http` |
+| `motionIcon` | Must be `http` (for now) | `http` |
+| `luxIcon` | Must be `http` (for now) | `http` |
+| `usageIcon` | Must be `http` (for now) | `http` |
+| `barometerIcon` | Must be `http` (for now) | `http` |
+| `rainIcon` | Must be `http` (for now) | `http` |
+| `rooms` | Must be `http` (for now) | `http` |
+| `floors` | Must be `http` (for now) | `http` |
+| `dashboardRooms` | Must be `http` (for now) | `http` |
+| `utilities` | Must be `http` (for now) | `http` |
+| `weather` | Must be `http` (for now) | `http` |
+| `actions` | Must be `http` (for now) | `http` |
+| `excludedDevices` | Must be `http` (for now) | `http` |
+
+### Rooms
 | Key | Description | Default |
 | --- | --- | --- |
 | `accessory` | Must be `HarmonyTV` | N/A |
 | `name` | Name to appear in the Home app | N/A |
 | `connection` | Must be `http` (for now) | `http` |
-
 
 ### Floors
 | Key | Description | Default |
