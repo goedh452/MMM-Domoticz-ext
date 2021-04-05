@@ -1,0 +1,25 @@
+{
+  "name": "MMM-Domoticz-ext",
+  "version": "1.0.0",
+  "description": "A module for displaying information from Domoticz.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/goedh452/MMM-Domoticz-ext"
+  },
+  "keywords": [
+    "magic mirror",
+    "smart mirror",
+    "domoticz",
+    "module"
+  ],
+  "author": "goedh452",
+  "contributors": "git+https://github.com/goedh452/MMM-Domoticz-ext/graphs/contributors",
+  "license": "MIT",
+  "bugs": {
+    "url": "git+hhttps://github.com/goedh452/MMM-Domoticz-ext/issues"
+  },
+  "homepage": "git+https://github.com/goedh452/MMM-Domoticz-ext#readme",
+  "dependencies": {
+    "XMLHttpRequest": "latest"
+  },
+}
