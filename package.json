@@ -20,6 +20,6 @@
   },
   "homepage": "git+https://github.com/goedh452/MMM-Domoticz-ext#readme",
   "dependencies": {
-    "XMLHttpRequest": "latest"
+    "xmlhttprequest": "latest"
   },
 }
