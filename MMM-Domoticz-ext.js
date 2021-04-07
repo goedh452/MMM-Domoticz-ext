@@ -329,10 +329,11 @@ Module.register("MMM-Domoticz-ext",{
 
 			} else if (notification == "MMM-DOMO-UTILITIES-SEND-" + this.identifier) {
 				var jsonUtilities = payload.data.result;
-        var utility = { name: jsonUtilities[0].Name, subType: jsonUtilities[0].SubType, counter:jsonUtilities[0].Counter, counterToday: jsonUtilities[0].CounterToday, return: jsonUtilities[0].CounterDeliv, returnToday: jsonUtilities[0].CounterDelivToday, usage: jsonUtilities[0].Usage, returnUsage: jsonUtilities[0].UsageDeliv };
-        this.utilities.push(utility);
+        if ( this.supportedEnergyTypeDevices.includes(jsonUtilities[0].SubType) ) {
+          var utility = { name: jsonUtilities[0].Name, subType: "Energy", counter:jsonUtilities[0].Counter, counterToday: jsonUtilities[0].CounterToday, return: jsonUtilities[0].CounterDeliv, returnToday: jsonUtilities[0].CounterDelivToday, usage: jsonUtilities[0].Usage, returnUsage: jsonUtilities[0].UsageDeliv };
+          this.utilities.push(utility);
+        }
         this.utilitiesProcessed += 1;
-
       } else if (notification == "MMM-DOMO-WEATHER-SEND-" + this.identifier) {
 				var jsonWeather = payload.data.result;
         var type = "";
