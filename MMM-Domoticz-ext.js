@@ -58,8 +58,11 @@ Module.register("MMM-Domoticz-ext",{
     utilities: {
       devices: [],
       utilityLabel: "Utilities",
+      showLabel: true,
       usageLabel: "Usage",
       gaugeWidth: 250,
+      lineWidth: 16,
+      markerWidth: 16,
       counterTodayLabel: "Today",
       gaugeEnergyMinValue: -3000,
       gaugeEnergyMaxValue: 3000,
@@ -74,6 +77,8 @@ Module.register("MMM-Domoticz-ext",{
       devices: [],
       weatherLabel: "Weather",
       gaugeWidth: 250,
+      lineWidth: 20,
+      markerWidth: 30,
       gaugeWindAppendText: "km/h",
       rainSuffix: "mm",
       barometerSuffix: "hPa",
@@ -106,7 +111,6 @@ Module.register("MMM-Domoticz-ext",{
 	supportedDevices: [0, 2, 3, 6, 7, 8, 11, 13, 16, 19, 20],
 	supportedTypeDevices: ["Temp", "Temp + Humidity", "Lux"],
   supportedSubTypeDevices: ["kWh"],
-  supportedEnergyTypeDevices: ["Energy", "kWh"],
 	roomCount: 0,
 	roomsProcessed: 0,
   utilityCount: 0,
@@ -156,7 +160,10 @@ Module.register("MMM-Domoticz-ext",{
     // Set undefined config variables to defaults
     if (this.config.utilities.utilityLabel          == undefined) { this.config.utilities.utilityLabel          = this.defaults.utilities.utilityLabel;          }
     if (this.config.utilities.usageLabel            == undefined) { this.config.utilities.usageLabel            = this.defaults.utilities.usageLabel;            }
+    if (this.config.utilities.showLabel             == undefined) { this.config.utilities.showLabel             = this.defaults.utilities.showLabel;             }
     if (this.config.utilities.gaugeWidth            == undefined) { this.config.utilities.gaugeWidth            = this.defaults.utilities.gaugeWidth;            }
+    if (this.config.utilities.lineWidth             == undefined) { this.config.utilities.lineWidth             = this.defaults.utilities.lineWidth;             }
+    if (this.config.utilities.markerWidth           == undefined) { this.config.utilities.markerWidth           = this.defaults.utilities.markerWidth;           }
     if (this.config.utilities.counterTodayLabel     == undefined) { this.config.utilities.counterTodayLabel     = this.defaults.utilities.counterTodayLabel;     }
     if (this.config.utilities.gaugeEnergyMinValue   == undefined) { this.config.utilities.gaugeEnergyMinValue   = this.defaults.utilities.gaugeEnergyMinValue;   }
     if (this.config.utilities.gaugeEnergyMaxValue   == undefined) { this.config.utilities.gaugeEnergyMaxValue   = this.defaults.utilities.gaugeEnergyMaxValue;   }
@@ -168,6 +175,8 @@ Module.register("MMM-Domoticz-ext",{
     if (this.config.utilities.useColors             == undefined) { this.config.utilities.useColors             = this.defaults.utilities.useColors;             }
     if (this.config.weather.weatherLabel            == undefined) { this.config.weather.weatherLabel            = this.defaults.weather.weatherLabel;            }
     if (this.config.weather.gaugeWidth              == undefined) { this.config.weather.gaugeWidth              = this.defaults.weather.gaugeWidth;              }
+    if (this.config.weather.lineWidth               == undefined) { this.config.weather.lineWidth               = this.defaults.weather.lineWidth;               }
+    if (this.config.weather.markerWidth             == undefined) { this.config.weather.markerWidth             = this.defaults.weather.markerWidth;             }
     if (this.config.weather.gaugeWindAppendText     == undefined) { this.config.weather.gaugeWindAppendText     = this.defaults.weather.gaugeWindAppendText;     }
     if (this.config.weather.rainSuffix              == undefined) { this.config.weather.rainSuffix              = this.defaults.weather.rainSuffix;              }
     if (this.config.weather.barometerSuffix         == undefined) { this.config.weather.barometerSuffix         = this.defaults.weather.barometerSuffix;         }
@@ -329,11 +338,10 @@ Module.register("MMM-Domoticz-ext",{
 
 			} else if (notification == "MMM-DOMO-UTILITIES-SEND-" + this.identifier) {
 				var jsonUtilities = payload.data.result;
-        if ( this.supportedEnergyTypeDevices.includes(jsonUtilities[0].SubType) ) {
-          var utility = { name: jsonUtilities[0].Name, subType: "Energy", counter:jsonUtilities[0].Counter, counterToday: jsonUtilities[0].CounterToday, return: jsonUtilities[0].CounterDeliv, returnToday: jsonUtilities[0].CounterDelivToday, usage: jsonUtilities[0].Usage, returnUsage: jsonUtilities[0].UsageDeliv };
-          this.utilities.push(utility);
-        }
+        var utility = { name: jsonUtilities[0].Name, subType: jsonUtilities[0].SubType, counter:jsonUtilities[0].Counter, counterToday: jsonUtilities[0].CounterToday, return: jsonUtilities[0].CounterDeliv, returnToday: jsonUtilities[0].CounterDelivToday, usage: jsonUtilities[0].Usage, returnUsage: jsonUtilities[0].UsageDeliv };
+        this.utilities.push(utility);
         this.utilitiesProcessed += 1;
+
       } else if (notification == "MMM-DOMO-WEATHER-SEND-" + this.identifier) {
 				var jsonWeather = payload.data.result;
         var type = "";
@@ -771,11 +779,14 @@ getUtilities: function(devices) {
 
   utTable.className =  "small";
   title.className   =  "title bright domoCenterCell";
-  divider.className += " domoDivider"
-  title.innerHTML   =  this.config.utilities.utilityLabel;
 
-  utDiv.appendChild(title);
-  utDiv.appendChild(divider);
+  if (this.config.utilities.showLabel) {
+    divider.className += " domoDivider"
+    title.innerHTML   =  this.config.utilities.utilityLabel;
+
+    utDiv.appendChild(title);
+    utDiv.appendChild(divider);
+  }
 
   var table    = document.createElement("table");
   var tableRow = document.createElement("tr");
@@ -897,8 +908,8 @@ getEnergyGauge: function(usage, returnUsage, counterToday) {
     append: " " + this.config.utilities.gaugeEnergyAppendText,
     color: color,
     back: "rgba(255,255,255,.3)",
-    width: 16,
-    markerWidth: 16,
+    width: this.config.utilities.lineWidth,
+    markerWidth: this.config.utilities.markerWidth,
     style: "Arch",
     stripe: 0,
     animationstep: 0,
@@ -935,8 +946,8 @@ getGasGauge: function(nettoUsage) {
   append: " " + this.config.utilities.gaugeGasAppendText,
   color: color,
   back: "rgba(255,255,255,.3)",
-  width: 16,
-  markerWidth: 16,
+  width: this.config.utilities.lineWidth,
+  markerWidth: this.config.utilities.markerWidth,
   style: "Arch",
   stripe: 0,
   animationstep: 0,
@@ -973,8 +984,8 @@ getWaterGauge: function(nettoUsage) {
   append: " " + this.config.utilities.gaugeWaterAppendText,
   color: color,
   back: "rgba(255,255,255,.3)",
-  width: 16,
-  markerWidth: 16,
+  width: this.config.utilities.lineWidth,
+  markerWidth: this.config.utilities.markerWidth,
   style: "Arch",
   stripe: 0,
   animationstep: 0,
@@ -1062,8 +1073,8 @@ getWeather: function(devices) {
         size: this.config.weather.gaugeWidth,
         color: color,
         back: "rgba(255,255,255,.3)",
-        width: 20,
-        markerWidth: 30,
+        width: this.config.weather.lineWidth,
+        markerWidth: this.config.weather.markerWidth,
         style: "Full",
         stripe: 5,
         animationstep: 0,
@@ -1126,8 +1137,8 @@ getWeather: function(devices) {
         size: this.config.weather.gaugeWidth,
         color: color,
         back: "rgba(255,255,255,.3)",
-        width: 20,
-        markerWidth: 30,
+        width: this.config.weather.lineWidth,
+        markerWidth: this.config.weather.markerWidth,
         style: "Full",
         stripe: 5,
         animationstep: 0,
@@ -1190,8 +1201,8 @@ getWeather: function(devices) {
           size: this.config.weather.gaugeWidth,
           color: color,
           back: "rgba(255,255,255,.3)",
-          width: 20,
-          markerWidth: 30,
+          width: this.config.weather.lineWidth,
+          markerWidth: this.config.weather.markerWidth,
           style: "Full",
           stripe: 5,
           animationstep: 0,
@@ -1228,8 +1239,8 @@ getWeather: function(devices) {
       var cellValue = document.createElement("td");
       var value     = "";
 
-      cellName.className  = "title bright domoCell";
-      cellValue.className = "title light domoCellState";
+      cellName.className  = "title bright domoWeatherCell";
+      cellValue.className = "title light domoWeatherCellState";
       cellName.innerHTML  = this.domo.shortenTitle(devices[d].name);
 
       if      ( devices[d].type == "temperature" ) { value = devices[d].temperature + " &#176;C" }
@@ -1258,11 +1269,13 @@ getWeather: function(devices) {
     }
   }
 
-  cellWeatherRest.appendChild(tableRest);
-  deviceRow.appendChild(cellWeatherRest);
+  if ( cellWeatherRest != undefined ) {
+    cellWeatherRest.appendChild(tableRest);
+    deviceRow.appendChild(cellWeatherRest);
+  }
+
   deviceTable.appendChild(deviceRow);
   weatherDiv.appendChild(deviceTable)
-
   weatherCell.appendChild(weatherDiv);
   weatherRow.appendChild(weatherCell);
   weatherTable.appendChild(weatherRow);
@@ -1422,6 +1435,7 @@ getButtons: function() {
    var masterRow         = document.createElement("tr");
    var masterRowActions  = document.createElement("tr");
    var masterCellResult  = document.createElement("td");
+   masterRow.className   = "domoCenterCell";
 
    // Get utility layout
    if ( this.utilities.length > 0 ) {
@@ -1445,6 +1459,7 @@ getButtons: function() {
   if ( this.config.showButtons && this.config.rooms.length > 0 ) {
     var masterRowButton  = document.createElement("tr");
     var masterCellButton = document.createElement("td");
+    masterRowButton.className   = "domoCenterCell";
     masterCellButton.className  = "domoMasterCell";
     masterCellButton.appendChild(this.getButtons());
 
