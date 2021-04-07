@@ -106,6 +106,7 @@ Module.register("MMM-Domoticz-ext",{
 	supportedDevices: [0, 2, 3, 6, 7, 8, 11, 13, 16, 19, 20],
 	supportedTypeDevices: ["Temp", "Temp + Humidity", "Lux"],
   supportedSubTypeDevices: ["kWh"],
+  supportedEnergyTypeDevices: ["Energy", "kWh"],
 	roomCount: 0,
 	roomsProcessed: 0,
   utilityCount: 0,
