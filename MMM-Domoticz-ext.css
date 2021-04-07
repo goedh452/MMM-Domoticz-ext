@@ -4,6 +4,7 @@
 
 .domoMasterCell {
     vertical-align: top;
+    text-align: center;
 }
 
 .domoRow {
@@ -65,6 +66,17 @@
   text-align: center;
 }
 
+.domoWeatherCell {
+  text-align: left;
+  vertical-align: center;
+  font-size: 75%;
+}
+.domoWeatherCellState {
+  text-align: right;
+  padding-left: 10px;
+  font-size: 75%;
+}
+
 .domoCenterCell {
   text-align: center;
 }
@@ -124,7 +136,6 @@
 .domoBarometerColor {
   color: #D0D905;
 }
-
 
 .domoDivider {
   margin-top: 5px;
