@@ -111,6 +111,7 @@ Module.register("MMM-Domoticz-ext",{
 	supportedDevices: [0, 2, 3, 6, 7, 8, 11, 13, 16, 19, 20],
 	supportedTypeDevices: ["Temp", "Temp + Humidity", "Lux"],
   supportedSubTypeDevices: ["kWh"],
+  supportedEnergyDevices: ["Energy", "kWh"],
 	roomCount: 0,
 	roomsProcessed: 0,
   utilityCount: 0,
@@ -338,7 +339,9 @@ Module.register("MMM-Domoticz-ext",{
 
 			} else if (notification == "MMM-DOMO-UTILITIES-SEND-" + this.identifier) {
 				var jsonUtilities = payload.data.result;
-        var utility = { name: jsonUtilities[0].Name, subType: jsonUtilities[0].SubType, counter:jsonUtilities[0].Counter, counterToday: jsonUtilities[0].CounterToday, return: jsonUtilities[0].CounterDeliv, returnToday: jsonUtilities[0].CounterDelivToday, usage: jsonUtilities[0].Usage, returnUsage: jsonUtilities[0].UsageDeliv };
+        var subType       = jsonUtilities[0].SubType
+        if ( this.supportedEnergyDevices.includes(jsonUtilities[0].SubType) ) { subType = "Energy"; }
+        var utility = { name: jsonUtilities[0].Name, subType: subType, counter:jsonUtilities[0].Counter, counterToday: jsonUtilities[0].CounterToday, return: jsonUtilities[0].CounterDeliv, returnToday: jsonUtilities[0].CounterDelivToday, usage: jsonUtilities[0].Usage, returnUsage: jsonUtilities[0].UsageDeliv };
         this.utilities.push(utility);
         this.utilitiesProcessed += 1;
 
