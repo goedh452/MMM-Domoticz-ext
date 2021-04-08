@@ -340,8 +340,16 @@ Module.register("MMM-Domoticz-ext",{
 			} else if (notification == "MMM-DOMO-UTILITIES-SEND-" + this.identifier) {
 				var jsonUtilities = payload.data.result;
         var subType       = jsonUtilities[0].SubType
+        var returnNow     = "0 Watt";
+        var returnToday   = "0 Watt";
+        var returnUsage   = "0 Watt";
+
+        if ( jsonUtilities[0].UsageDeliv        != undefined ) { returnNow  = jsonUtilities[0].UsageDeliv;         }
+        if ( jsonUtilities[0].CounterDelivToday != undefined ) { returnToday = jsonUtilities[0].CounterDelivToday; }
+        if ( jsonUtilities[0].CounterDeliv      != undefined ) { returnUsage = jsonUtilities[0].CounterDeliv;      }
         if ( this.supportedEnergyDevices.includes(jsonUtilities[0].SubType) ) { subType = "Energy"; }
-        var utility = { name: jsonUtilities[0].Name, subType: subType, counter:jsonUtilities[0].Counter, counterToday: jsonUtilities[0].CounterToday, return: jsonUtilities[0].CounterDeliv, returnToday: jsonUtilities[0].CounterDelivToday, usage: jsonUtilities[0].Usage, returnUsage: jsonUtilities[0].UsageDeliv };
+
+        var utility = { name: jsonUtilities[0].Name, subType: subType, counter:jsonUtilities[0].Counter, counterToday: jsonUtilities[0].CounterToday, return: returnUsage, returnToday: returnToday, usage: jsonUtilities[0].Usage, returnUsage: returnNow };
         this.utilities.push(utility);
         this.utilitiesProcessed += 1;
 
