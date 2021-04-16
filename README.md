@@ -49,7 +49,7 @@ With the config parameter `alwaysShowActions` it is possible to always display t
 | --- | --- | --- |
 | `apiIP` | IP address of Domoticz | N/A |
 | `apiPort` | Domoticz port | N/A |
-| `updateInterval` | Time seconds between status checks (if you have a lot of devices, do not set this value too low | `10` |
+| `updateInterval` | Time in seconds between status checks (if you have a lot of devices, do not set this value too low | `10` |
 | `animationSpeed` | Time fade-out/fade-in when DOM is refreshed. With many updates, 0 is the best value. | `0` |
 | `displayType` | Set layout for the module (see above for possible values) | `both` |
 | `alwaysShowDashboard` | Always show the dashboard at the top | `false` |
@@ -124,12 +124,12 @@ With the config parameter `alwaysShowActions` it is possible to always display t
 | `utilityLabel` | Header for the utilities layout | `Utilities` |
 | `usageLabel` | Label for energy usage | `Usage` |
 | `gaugeWidth` | Width of the gauge element | `250` |
-| `counterTodayLabel` | Label voor counters | `Today` |
+| `counterTodayLabel` | Label for sum of today | `Today` |
 | `gaugeEnergyMinValue` | Minimum value of the gauge for enegry usage (supports return) | `-3000` |
 | `gaugeEnergyMaxValue` | Maximum value of the gauge for enegry usage | `3000` |
 | `gaugeEnergyAppendText` | Text to append to the gauge value | `Watt` |
 | `gaugeGasMaxValue` | Maximum value for gas gauge based on daily usage. Gauge starts at 0. | `25` |
-| `gaugeGasAppendText` | Text to append to the gas gauge value | `m3` |
+| `gaugeGasAppendText` | Text to append to the gas gauge value | `m³` |
 | `gaugeWaterMaxValue` | Maximum value for water gauge based on daily usage. Gauge starts at 0. | `1500` |
 | `gaugeWaterAppendText` | Text to append to the water gauge value | `liter` |
 | `useColors` | Use colors in the utility layout | `true` |
