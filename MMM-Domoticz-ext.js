@@ -58,7 +58,6 @@ Module.register("MMM-Domoticz-ext",{
     utilities: {
       utilityLabel: "Utilities",
       showLabel: true,
-      useColors: true,
       devices: [],
     },
     weather: {
@@ -158,7 +157,6 @@ Module.register("MMM-Domoticz-ext",{
 
     // Set undefined config variables to defaults
     if (this.config.utilities.utilityLabel          == undefined) { this.config.utilities.utilityLabel          = this.defaults.utilities.utilityLabel;          }
-    if (this.config.utilities.usageLabel            == undefined) { this.config.utilities.usageLabel            = this.defaults.utilities.usageLabel;            }
     if (this.config.utilities.showLabel             == undefined) { this.config.utilities.showLabel             = this.defaults.utilities.showLabel;             }
     if (this.config.weather.weatherLabel            == undefined) { this.config.weather.weatherLabel            = this.defaults.weather.weatherLabel;            }
     if (this.config.weather.gaugeWidth              == undefined) { this.config.weather.gaugeWidth              = this.defaults.weather.gaugeWidth;              }
