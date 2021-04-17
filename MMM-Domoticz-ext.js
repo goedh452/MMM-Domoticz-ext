@@ -1464,6 +1464,6 @@ getButtons: function() {
      wrapper.appendChild(pageSelectButton);
    }
 
-	 return wrapper;
+	return wrapper;
  },
 });
