@@ -120,19 +120,25 @@ With the config parameter `alwaysShowActions` it is possible to always display t
 ### Utilities
 | Key | Description | Default |
 | --- | --- | --- |
-| `devices` | Array of device IDX's | N/A |
 | `utilityLabel` | Header for the utilities layout | `Utilities` |
-| `usageLabel` | Label for energy usage | `Usage` |
-| `gaugeWidth` | Width of the gauge element | `250` |
+| `showLabel` | Display header label | `true` |
+| `devices` | Array of devices; see below for config options | N/A |
+
+### Utility devices
+| Key | Description | Default |
+| --- | --- | --- |
+| `idx` | IDX of the device to display (expects a string) | N/A |
+| `deviceHeader` | Header for the specific device | N/A |
+| `useHeaderSymbol` | Use a symbol of Font Awesome as header | `false` |
+| `headerSymbol` | Font Awesome symbol to display | N/A |
 | `counterTodayLabel` | Label for sum of today | `Today` |
-| `gaugeEnergyMinValue` | Minimum value of the gauge for enegry usage (supports return) | `-3000` |
-| `gaugeEnergyMaxValue` | Maximum value of the gauge for enegry usage | `3000` |
-| `gaugeEnergyAppendText` | Text to append to the gauge value | `Watt` |
-| `gaugeGasMaxValue` | Maximum value for gas gauge based on daily usage. Gauge starts at 0. | `25` |
-| `gaugeGasAppendText` | Text to append to the gas gauge value | `m³` |
-| `gaugeWaterMaxValue` | Maximum value for water gauge based on daily usage. Gauge starts at 0. | `1500` |
-| `gaugeWaterAppendText` | Text to append to the water gauge value | `liter` |
-| `useColors` | Use colors in the utility layout | `true` |
+| `gaugeMinValue` | Minimum value of the gauge; supports return for energy: negative values are allowed | `0` |
+| `gaugeMaxValue` | Maximum value of the gauge | `3000` |
+| `gaugeAppendText` | Text to append to the gauge value (e.g. kWh of liter) | N/A |
+| `gaugeWidth` | Display width of the gauge | `200` |
+| `gaugeLineWidth` | Width of the gauge line | `16` |
+| `gaugeMarkerWidth` | Width of the gauge marker indicating the value | `16` |
+| `gaugeMarkerColor` | Color of the gauge marker indicating the value | `#F4D03F` |
 
 ### Weather
 | Key | Description | Default |
@@ -266,18 +272,42 @@ With the config parameter `alwaysShowActions` it is possible to always display t
       },
     ],
     utilities: {
-      devices: [ "304", "329", "1614" ],
-      utilityLabel: "Gas - water - licht",
-      counterTodayLabel: "Vandaag",
-      gaugeWidth: 200,
-      gaugeEnergyMinValue: -3000,
-      gaugeEnergyMaxValue: 3000,
-      gaugeEnergyAppendText: "Watt",
-      gaugeGasMaxValue: 25,
-      gaugeGasAppendText: "m3",
-      gaugeWaterMaxValue: 1500,
-      gaugeWaterAppendText: "liter",
-      useColors: true,
+      utilityLabel: "Gas - Water - Licht",
+      showLabel: true,
+      devices: [
+        {
+          idx: "304",
+          deviceHeader: "Elektriciteit",
+          useHeaderSymbol: false,
+          headerSymbol: "fire",
+          counterTodayLabel: "Vandaag",
+          gaugeMinValue: -3000,
+          gaugeMaxValue: 3000,
+          gaugeAppendText: "Watt",
+          gaugeWidth: 200,
+          lineWidth: 16,
+          markerWidth: 16,
+          markerColor: "#F4D03F"
+        },
+        {
+          idx: "329",
+          deviceHeader: "Gas",
+          useHeaderSymbol: true,
+          headerSymbol: "fire",
+          counterTodayLabel: "Vandaag",
+          gaugeMaxValue: 25,
+          gaugeAppendText: "m³",
+        },
+        {
+          idx: "1614",
+          deviceHeader: "Water",
+          useHeaderSymbol: false,
+          headerSymbol: "water",
+          counterTodayLabel: "Vandaag",
+          gaugeMaxValue: 1500,
+          gaugeAppendText: "liter",
+        }
+      ],
     },
     weather: {
       devices: [ "1547", "890", "1588", "1545", "1546", "1736", "1544", "590" ],
