@@ -56,22 +56,10 @@ Module.register("MMM-Domoticz-ext",{
     floors: [],
     dashboardRooms: [],
     utilities: {
-      devices: [],
       utilityLabel: "Utilities",
       showLabel: true,
-      usageLabel: "Usage",
-      gaugeWidth: 250,
-      lineWidth: 16,
-      markerWidth: 16,
-      counterTodayLabel: "Today",
-      gaugeEnergyMinValue: -3000,
-      gaugeEnergyMaxValue: 3000,
-      gaugeEnergyAppendText: "Watt",
-      gaugeGasMaxValue: 25,
-      gaugeGasAppendText: "m3",
-      gaugeWaterMaxValue: 1500,
-      gaugeWaterAppendText: "liter",
       useColors: true,
+      devices: [],
     },
     weather: {
       devices: [],
@@ -139,6 +127,16 @@ Module.register("MMM-Domoticz-ext",{
   baroMin: 950,
   baroMax: 1050,
   loadingMessage: "Loading...",
+  defaultGaugeUseHeaderSymbol: false,
+  defaultGaugeHeaderSymbol: "",
+  defaultGaugeCounterTodayLabel: "Today",
+  defaultGaugeMinValue: 0,
+  defaultGaugeMaxValue: 3000,
+  defaultGaugeAppendText: "",
+  defaultGaugeWidth: 200,
+  defaultGaugeLineWidth: 16,
+  defaultGaugeMarkerWidth: 16,
+  defaultGaugeMarkerColor: "#F4D03F",
 
 	start: function() {
 		Log.info('Starting module: ' + this.name);
@@ -162,18 +160,6 @@ Module.register("MMM-Domoticz-ext",{
     if (this.config.utilities.utilityLabel          == undefined) { this.config.utilities.utilityLabel          = this.defaults.utilities.utilityLabel;          }
     if (this.config.utilities.usageLabel            == undefined) { this.config.utilities.usageLabel            = this.defaults.utilities.usageLabel;            }
     if (this.config.utilities.showLabel             == undefined) { this.config.utilities.showLabel             = this.defaults.utilities.showLabel;             }
-    if (this.config.utilities.gaugeWidth            == undefined) { this.config.utilities.gaugeWidth            = this.defaults.utilities.gaugeWidth;            }
-    if (this.config.utilities.lineWidth             == undefined) { this.config.utilities.lineWidth             = this.defaults.utilities.lineWidth;             }
-    if (this.config.utilities.markerWidth           == undefined) { this.config.utilities.markerWidth           = this.defaults.utilities.markerWidth;           }
-    if (this.config.utilities.counterTodayLabel     == undefined) { this.config.utilities.counterTodayLabel     = this.defaults.utilities.counterTodayLabel;     }
-    if (this.config.utilities.gaugeEnergyMinValue   == undefined) { this.config.utilities.gaugeEnergyMinValue   = this.defaults.utilities.gaugeEnergyMinValue;   }
-    if (this.config.utilities.gaugeEnergyMaxValue   == undefined) { this.config.utilities.gaugeEnergyMaxValue   = this.defaults.utilities.gaugeEnergyMaxValue;   }
-    if (this.config.utilities.gaugeEnergyAppendText == undefined) { this.config.utilities.gaugeEnergyAppendText = this.defaults.utilities.gaugeEnergyAppendText; }
-    if (this.config.utilities.gaugeGasMaxValue      == undefined) { this.config.utilities.gaugeGasMaxValue      = this.defaults.utilities.gaugeGasMaxValue;      }
-    if (this.config.utilities.gaugeGasAppendText    == undefined) { this.config.utilities.gaugeGasAppendText    = this.defaults.utilities.gaugeGasAppendText;    }
-    if (this.config.utilities.gaugeWaterMaxValue    == undefined) { this.config.utilities.gaugeWaterMaxValue    = this.defaults.utilities.gaugeWaterMaxValue;    }
-    if (this.config.utilities.gaugeWaterAppendText  == undefined) { this.config.utilities.gaugeWaterAppendText  = this.defaults.utilities.gaugeWaterAppendText;  }
-    if (this.config.utilities.useColors             == undefined) { this.config.utilities.useColors             = this.defaults.utilities.useColors;             }
     if (this.config.weather.weatherLabel            == undefined) { this.config.weather.weatherLabel            = this.defaults.weather.weatherLabel;            }
     if (this.config.weather.gaugeWidth              == undefined) { this.config.weather.gaugeWidth              = this.defaults.weather.gaugeWidth;              }
     if (this.config.weather.lineWidth               == undefined) { this.config.weather.lineWidth               = this.defaults.weather.lineWidth;               }
@@ -245,7 +231,7 @@ Module.register("MMM-Domoticz-ext",{
     if ( this.config.utilities.devices.length > 0 ) {
       for ( var u = 0; u < this.config.utilities.devices.length; u++ ) {
   			// Get device for utilities
-  			var utilityUrl = "http://" + this.config.apiBase + ":" + this.config.apiPort + "/json.htm?type=devices&rid=" + this.config.utilities.devices[u];
+  			var utilityUrl = "http://" + this.config.apiBase + ":" + this.config.apiPort + "/json.htm?type=devices&rid=" + this.config.utilities.devices[u].idx;
   			this.sendSocketNotification("MMM-DOMO-GET-DATA", {url: utilityUrl, returnNotification: "MMM-DOMO-UTILITIES-SEND-"  + this.identifier, roomID: -1 });
   		}
     }
@@ -349,7 +335,7 @@ Module.register("MMM-Domoticz-ext",{
         if ( jsonUtilities[0].CounterDeliv      != undefined ) { returnUsage = jsonUtilities[0].CounterDeliv;      }
         if ( this.supportedEnergyDevices.includes(jsonUtilities[0].SubType) ) { subType = "Energy"; }
 
-        var utility = { name: jsonUtilities[0].Name, subType: subType, counter:jsonUtilities[0].Counter, counterToday: jsonUtilities[0].CounterToday, return: returnUsage, returnToday: returnToday, usage: jsonUtilities[0].Usage, returnUsage: returnNow };
+        var utility = { idx: jsonUtilities[0].idx, name: jsonUtilities[0].Name, subType: subType, counter:jsonUtilities[0].Counter, counterToday: jsonUtilities[0].CounterToday, return: returnUsage, returnToday: returnToday, usage: jsonUtilities[0].Usage, returnUsage: returnNow };
         this.utilities.push(utility);
         this.utilitiesProcessed += 1;
 
@@ -788,6 +774,18 @@ getUtilities: function(devices) {
   var title    = document.createElement("p");
   var divider  = document.createElement("hr");
 
+  var deviceHeader      = "";
+  var useHeaderSymbol   = false;
+  var headerSymbol      = "";
+  var counterTodayLabel = "";
+  var gaugeMinValue     = 0;
+  var gaugeMaxValue     = 0;
+  var gaugeAppendText   = "";
+  var gaugeWidth        = 0;
+  var lineWidth         = 0;
+  var markerWidth       = 0;
+  var markerColor       = "";
+
   utTable.className =  "small";
   title.className   =  "title bright domoCenterCell";
 
@@ -804,6 +802,24 @@ getUtilities: function(devices) {
   table.className = "small";
 
   for ( d in devices ) {
+
+    // Get config properties for device
+    for ( var c = 0; c < this.config.utilities.devices.length; c++ ) {
+      if ( devices[d].idx == this.config.utilities.devices[c].idx ) {
+        if ( this.config.utilities.devices[c].deviceHeader      == undefined ) { deviceHeader      = devices[d].name;                    } else { deviceHeader      = this.config.utilities.devices[c].deviceHeader; }
+        if ( this.config.utilities.devices[c].useHeaderSymbol   == undefined ) { useHeaderSymbol   = this.defaultGaugeUseHeaderSymbol;   } else { useHeaderSymbol   = this.config.utilities.devices[c].useHeaderSymbol; }
+        if ( this.config.utilities.devices[c].headerSymbol      == undefined ) { headerSymbol      = this.defaultGaugeheaderSymbol;      } else { headerSymbol      = this.config.utilities.devices[c].headerSymbol; }
+        if ( this.config.utilities.devices[c].counterTodayLabel == undefined ) { counterTodayLabel = this.defaultGaugeCounterTodayLabel; } else { counterTodayLabel = this.config.utilities.devices[c].counterTodayLabel; }
+        if ( this.config.utilities.devices[c].gaugeMinValue     == undefined ) { gaugeMinValue     = this.defaultGaugeMinValue;          } else { gaugeMinValue     = this.config.utilities.devices[c].gaugeMinValue; }
+        if ( this.config.utilities.devices[c].gaugeMaxValue     == undefined ) { gaugeMaxValue     = this.defaultGaugeMaxValue;          } else { gaugeMaxValue     = this.config.utilities.devices[c].gaugeMaxValue; }
+        if ( this.config.utilities.devices[c].gaugeAppendText   == undefined ) { gaugeAppendText   = this.defaultGaugeAppendText;        } else { gaugeAppendText   = this.config.utilities.devices[c].gaugeAppendText; }
+        if ( this.config.utilities.devices[c].gaugeWidth        == undefined ) { gaugeWidth        = this.defaultGaugeWidth;             } else { gaugeWidth        = this.config.utilities.devices[c].gaugeWidth; }
+        if ( this.config.utilities.devices[c].lineWidth         == undefined ) { lineWidth         = this.defaultGaugeLineWidth;         } else { lineWidth         = this.config.utilities.devices[c].lineWidth; }
+        if ( this.config.utilities.devices[c].markerWidth       == undefined ) { markerWidth       = this.defaultGaugeMarkerWidth;       } else { markerWidth       = this.config.utilities.devices[c].markerWidth; }
+        if ( this.config.utilities.devices[c].markerColor       == undefined ) { markerColor       = this.defaultGaugeMarkerColor;       } else { markerColor       = this.config.utilities.devices[c].markerColor; }
+      }
+    }
+
     if ( devices[d].subType == "Energy") {
       var tableCell        = document.createElement("td");
       var tableEnergy      = document.createElement("table");
@@ -813,16 +829,23 @@ getUtilities: function(devices) {
       var cellUsage        = document.createElement("td");
 
       tableEnergy.className = "small";
-      cellName.className    = "title bright gaugeAlign";
-      cellUsage.className   = "gaugeAlign";
-      cellName.innerHTML    = devices[d].name;
+
+      if ( useHeaderSymbol ) {
+        cellName.className = "fa fa-" + headerSymbol;
+      } else {
+        cellName.className   = "title bright gaugeAlign";
+        cellUsage.className  = "gaugeAlign";
+        cellName.innerHTML    = deviceHeader;
+      }
 
       // Build gauge
       var usageValue       = parseInt(devices[d].usage.replace(" Watt", ""));
       var returnUsageValue = parseInt(devices[d].returnUsage.replace(" Watt", ""));
       var counterTodayTemp = parseFloat(devices[d].counterToday.replace(" kWh", "")) - parseFloat(devices[d].returnToday.replace(" kWh", ""));
       var counterToday     = counterTodayTemp.toFixed(1);
-      var usageGaugeResult = this.getEnergyGauge(usageValue, returnUsageValue, counterToday);
+      var counterTodayText = counterTodayLabel + " " + counterToday + " " + gaugeAppendText;
+      var nettoUsage       = usageValue - returnUsageValue;
+      var usageGaugeResult = this.getGauge( devices[d].idx, nettoUsage, counterTodayText, gaugeMinValue, gaugeMaxValue, gaugeAppendText, gaugeWidth, lineWidth, markerWidth, markerColor );
 
       cellUsage.appendChild(usageGaugeResult);
       rowEnergy.appendChild(cellName);
@@ -841,13 +864,17 @@ getUtilities: function(devices) {
       var cellName  = document.createElement("td");
       var cellUsage = document.createElement("td");
 
-      cellName.className   = "title bright gaugeAlign";
-      cellUsage.className  = "gaugeAlign";
-      cellName.innerHTML = devices[d].name;
+      if ( useHeaderSymbol ) {
+        cellName.className = "fa fa-" + headerSymbol;
+      } else {
+        cellName.className   = "title bright gaugeAlign";
+        cellUsage.className  = "gaugeAlign";
+        cellName.innerHTML    = deviceHeader;
+      }
 
       // Build gauge
       var usageValue       = parseFloat(devices[d].counterToday.replace(" m3", ""));
-      var usageGaugeResult = this.getGasGauge(usageValue);
+      var usageGaugeResult = this.getGauge( devices[d].idx, usageValue, counterTodayLabel, gaugeMinValue, gaugeMaxValue, gaugeAppendText, gaugeWidth, lineWidth, markerWidth, markerColor );
 
       cellUsage.appendChild(usageGaugeResult);
       rowGas.appendChild(cellName);
@@ -866,13 +893,17 @@ getUtilities: function(devices) {
       var cellName   = document.createElement("td");
       var cellUsage  = document.createElement("td");
 
-      cellName.className   = "title bright gaugeAlign";
-      cellUsage.className  = "gaugeAlign";
-      cellName.innerHTML = devices[d].name;
+      if ( useHeaderSymbol ) {
+        cellName.className = "fa fa-" + headerSymbol;
+      } else {
+        cellName.className   = "title bright gaugeAlign";
+        cellUsage.className  = "gaugeAlign";
+        cellName.innerHTML    = deviceHeader;
+      }
 
       // Build gauge
       var usageValue       = parseFloat(devices[d].counterToday.replace(" Liter", ""));
-      var usageGaugeResult = this.getWaterGauge(usageValue);
+      var usageGaugeResult = this.getGauge( devices[d].idx, usageValue, counterTodayLabel, gaugeMinValue, gaugeMaxValue, gaugeAppendText, gaugeWidth, lineWidth, markerWidth, markerColor );
 
       cellUsage.appendChild(usageGaugeResult);
       rowWater.appendChild(cellName);
@@ -893,121 +924,44 @@ getUtilities: function(devices) {
   return utTable;
 },
 
-getEnergyGauge: function(usage, returnUsage, counterToday) {
+getGauge: function( idx, usage, counterTodayText, gaugeMinValue, gaugeMaxValue, gaugeAppendText, gaugeWidth, lineWidth, markerWidth, markerColor ) {
 
   // Variables for usage
-  var nettoUsage    = usage - returnUsage;
-  var label         = this.config.utilities.counterTodayLabel + ": " + counterToday + " kWh";
-  var percentage    = Math.floor((nettoUsage / this.config.utilities.gaugeEnergyMaxValue) * 100);
-  var color         = "#F4D03F"
+  var percentage    = Math.floor((usage / gaugeMaxValue) * 100);
+  var color         = markerColor;
   var antiClockwise = false;
+  var centerZero    = false;
+
+  if ( gaugeMinValue < 0 ) { centerZero = true; }
 
   // Variables for return
-  if (nettoUsage < 0) {
-    percentage    = Math.floor((Math.abs(nettoUsage / this.config.utilities.gaugeEnergyMinValue)) * 100);
+  if (usage < 0) {
+    percentage    = Math.floor((Math.abs(usage / gaugeMinValue)) * 100);
     color         = "#70db70";
     antiClockwise = true;
   }
 
-  if (!this.config.utilities.useColors) { color = "#ffffff"; }
-
-  var spanSelector = "#Usage span";
-  var gaugeTable = jQuery(document.createElement("div")).addClass("GaugeMeter").attr("id", "Usage");
+  var spanSelector = "#" + idx + " span";
+  var gaugeTable = jQuery(document.createElement("div")).addClass("GaugeMeter").attr("id", idx);
   var obj = {
     percent: percentage,
-    size: this.config.utilities.gaugeWidth,
-    append: " " + this.config.utilities.gaugeEnergyAppendText,
+    size: gaugeWidth,
+    append: " " + gaugeAppendText,
     color: color,
     back: "rgba(255,255,255,.3)",
-    width: this.config.utilities.lineWidth,
-    markerWidth: this.config.utilities.markerWidth,
+    width: lineWidth,
+    markerWidth: markerWidth,
     style: "Arch",
     stripe: 0,
     animationstep: 0,
     animate_gauge_colors: false,
     animate_text_colors: false,
-    label: label,
+    label: counterTodayText,
     label_color: "#ffffff",
-    text: nettoUsage,
+    text: usage,
     text_size: .11,
-    centerZero: true,
+    centerZero: centerZero,
     antiClockwise: antiClockwise
-  }
-
-  gaugeTable.data(obj);
-  gaugeTable.gaugeMeter();
-  return gaugeTable[0];
-},
-
-getGasGauge: function(nettoUsage) {
-
-  // Variables for usage
-  var label         = this.config.utilities.counterTodayLabel;
-  var percentage    = Math.floor((nettoUsage / this.config.utilities.gaugeGasMaxValue) * 100);
-  var color         = "#F4D03F"
-  var antiClockwise = false;
-
-  if (!this.config.utilities.useColors) {color = "#ffffff";}
-
-  var spanSelector = "#Gas span";
-  var gaugeTable = jQuery(document.createElement("div")).addClass("GaugeMeter").attr("id", "Gas");
-  var obj = {
-  percent: percentage,
-  size: this.config.utilities.gaugeWidth,
-  append: " " + this.config.utilities.gaugeGasAppendText,
-  color: color,
-  back: "rgba(255,255,255,.3)",
-  width: this.config.utilities.lineWidth,
-  markerWidth: this.config.utilities.markerWidth,
-  style: "Arch",
-  stripe: 0,
-  animationstep: 0,
-  animate_gauge_colors: false,
-  animate_text_colors: false,
-  label: label,
-  label_color: "#ffffff",
-  text: nettoUsage,
-  text_size: .11,
-  centerZero: false,
-  antiClockwise: antiClockwise
-  }
-
-  gaugeTable.data(obj);
-  gaugeTable.gaugeMeter();
-  return gaugeTable[0];
-},
-
-getWaterGauge: function(nettoUsage) {
-
-  // Variables for usage
-  var label         = this.config.utilities.counterTodayLabel;
-  var percentage    = Math.floor((nettoUsage / this.config.utilities.gaugeWaterMaxValue) * 100);
-  var color         = "#F4D03F"
-  var antiClockwise = false;
-
-  if (!this.config.utilities.useColors) {color = "#ffffff";}
-
-  var spanSelector = "#Water span";
-  var gaugeTable = jQuery(document.createElement("div")).addClass("GaugeMeter").attr("id", "Water");
-  var obj = {
-  percent: percentage,
-  size: this.config.utilities.gaugeWidth,
-  append: " " + this.config.utilities.gaugeWaterAppendText,
-  color: color,
-  back: "rgba(255,255,255,.3)",
-  width: this.config.utilities.lineWidth,
-  markerWidth: this.config.utilities.markerWidth,
-  style: "Arch",
-  stripe: 0,
-  animationstep: 0,
-  animate_gauge_colors: false,
-  animate_text_colors: false,
-  label: label,
-  label_color: "#ffffff",
-  text: nettoUsage,
-  text_size: .11,
-  centerZero: false,
-  antiClockwise: antiClockwise
   }
 
   gaugeTable.data(obj);
