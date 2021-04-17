@@ -124,7 +124,7 @@ With the config parameter `alwaysShowActions` it is possible to always display t
 | `showLabel` | Display header label | `true` |
 | `devices` | Array of devices; see below for config options | N/A |
 
-### Utility devices
+#### Utility devices
 | Key | Description | Default |
 | --- | --- | --- |
 | `idx` | IDX of the device to display (expects a string) | N/A |
