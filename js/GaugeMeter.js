@@ -93,6 +93,8 @@
                 $("<span></span>").appendTo(t).html(r).css({
                     "line-height": option.size + "px",
                     "font-size": option.text_size * option.size + "px",
+                    "font-family": "Roboto Condensed",
+                    "font-weight": 400,
                     color: fgcolor
                 });
             }
