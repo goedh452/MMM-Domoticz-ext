@@ -132,6 +132,7 @@ With the config parameter `alwaysShowActions` it is possible to always display t
 | `useHeaderSymbol` | Use a symbol of Font Awesome as header | `false` |
 | `headerSymbol` | Font Awesome symbol to display | N/A |
 | `counterTodayLabel` | Label for sum of today | `Today` |
+| `counterTodayAppendText` | Text to append to the counter today (for energy only) | `kWh` |
 | `gaugeMinValue` | Minimum value of the gauge; supports return for energy: negative values are allowed | `0` |
 | `gaugeMaxValue` | Maximum value of the gauge | `3000` |
 | `gaugeAppendText` | Text to append to the gauge value (e.g. kWh of liter) | N/A |
