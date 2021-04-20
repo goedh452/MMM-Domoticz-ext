@@ -129,6 +129,7 @@ Module.register("MMM-Domoticz-ext",{
   defaultGaugeUseHeaderSymbol: false,
   defaultGaugeHeaderSymbol: "",
   defaultGaugeCounterTodayLabel: "Today",
+  defaultGaugeCounterTodayAppendText: "kWh",
   defaultGaugeMinValue: 0,
   defaultGaugeMaxValue: 3000,
   defaultGaugeAppendText: "",
@@ -772,17 +773,18 @@ getUtilities: function(devices) {
   var title    = document.createElement("p");
   var divider  = document.createElement("hr");
 
-  var deviceHeader      = "";
-  var useHeaderSymbol   = false;
-  var headerSymbol      = "";
-  var counterTodayLabel = "";
-  var gaugeMinValue     = 0;
-  var gaugeMaxValue     = 0;
-  var gaugeAppendText   = "";
-  var gaugeWidth        = 0;
-  var lineWidth         = 0;
-  var markerWidth       = 0;
-  var markerColor       = "";
+  var deviceHeader           = "";
+  var useHeaderSymbol        = false;
+  var headerSymbol           = "";
+  var counterTodayLabel      = "";
+  var counterTodayAppendText = "kWh";
+  var gaugeMinValue          = 0;
+  var gaugeMaxValue          = 0;
+  var gaugeAppendText        = "";
+  var gaugeWidth             = 0;
+  var lineWidth              = 0;
+  var markerWidth            = 0;
+  var markerColor            = "";
 
   utTable.className =  "small";
   title.className   =  "title bright domoCenterCell";
@@ -804,17 +806,18 @@ getUtilities: function(devices) {
     // Get config properties for device
     for ( var c = 0; c < this.config.utilities.devices.length; c++ ) {
       if ( devices[d].idx == this.config.utilities.devices[c].idx ) {
-        if ( this.config.utilities.devices[c].deviceHeader      == undefined ) { deviceHeader      = devices[d].name;                    } else { deviceHeader      = this.config.utilities.devices[c].deviceHeader; }
-        if ( this.config.utilities.devices[c].useHeaderSymbol   == undefined ) { useHeaderSymbol   = this.defaultGaugeUseHeaderSymbol;   } else { useHeaderSymbol   = this.config.utilities.devices[c].useHeaderSymbol; }
-        if ( this.config.utilities.devices[c].headerSymbol      == undefined ) { headerSymbol      = this.defaultGaugeheaderSymbol;      } else { headerSymbol      = this.config.utilities.devices[c].headerSymbol; }
-        if ( this.config.utilities.devices[c].counterTodayLabel == undefined ) { counterTodayLabel = this.defaultGaugeCounterTodayLabel; } else { counterTodayLabel = this.config.utilities.devices[c].counterTodayLabel; }
-        if ( this.config.utilities.devices[c].gaugeMinValue     == undefined ) { gaugeMinValue     = this.defaultGaugeMinValue;          } else { gaugeMinValue     = this.config.utilities.devices[c].gaugeMinValue; }
-        if ( this.config.utilities.devices[c].gaugeMaxValue     == undefined ) { gaugeMaxValue     = this.defaultGaugeMaxValue;          } else { gaugeMaxValue     = this.config.utilities.devices[c].gaugeMaxValue; }
-        if ( this.config.utilities.devices[c].gaugeAppendText   == undefined ) { gaugeAppendText   = this.defaultGaugeAppendText;        } else { gaugeAppendText   = this.config.utilities.devices[c].gaugeAppendText; }
-        if ( this.config.utilities.devices[c].gaugeWidth        == undefined ) { gaugeWidth        = this.defaultGaugeWidth;             } else { gaugeWidth        = this.config.utilities.devices[c].gaugeWidth; }
-        if ( this.config.utilities.devices[c].lineWidth         == undefined ) { lineWidth         = this.defaultGaugeLineWidth;         } else { lineWidth         = this.config.utilities.devices[c].lineWidth; }
-        if ( this.config.utilities.devices[c].markerWidth       == undefined ) { markerWidth       = this.defaultGaugeMarkerWidth;       } else { markerWidth       = this.config.utilities.devices[c].markerWidth; }
-        if ( this.config.utilities.devices[c].markerColor       == undefined ) { markerColor       = this.defaultGaugeMarkerColor;       } else { markerColor       = this.config.utilities.devices[c].markerColor; }
+        if ( this.config.utilities.devices[c].deviceHeader           == undefined ) { deviceHeader           = devices[d].name;                         } else { deviceHeader           = this.config.utilities.devices[c].deviceHeader;           }
+        if ( this.config.utilities.devices[c].useHeaderSymbol        == undefined ) { useHeaderSymbol        = this.defaultGaugeUseHeaderSymbol;        } else { useHeaderSymbol        = this.config.utilities.devices[c].useHeaderSymbol;        }
+        if ( this.config.utilities.devices[c].headerSymbol           == undefined ) { headerSymbol           = this.defaultGaugeheaderSymbol;           } else { headerSymbol           = this.config.utilities.devices[c].headerSymbol;           }
+        if ( this.config.utilities.devices[c].counterTodayLabel      == undefined ) { counterTodayLabel      = this.defaultGaugeCounterTodayLabel;      } else { counterTodayLabel      = this.config.utilities.devices[c].counterTodayLabel;      }
+        if ( this.config.utilities.devices[c].counterTodayAppendText == undefined ) { counterTodayAppendText = this.defaultGaugeCounterTodayAppendText; } else { counterTodayAppendText = this.config.utilities.devices[c].counterTodayAppendText; }
+        if ( this.config.utilities.devices[c].gaugeMinValue          == undefined ) { gaugeMinValue          = this.defaultGaugeMinValue;               } else { gaugeMinValue          = this.config.utilities.devices[c].gaugeMinValue;          }
+        if ( this.config.utilities.devices[c].gaugeMaxValue          == undefined ) { gaugeMaxValue          = this.defaultGaugeMaxValue;               } else { gaugeMaxValue          = this.config.utilities.devices[c].gaugeMaxValue;          }
+        if ( this.config.utilities.devices[c].gaugeAppendText        == undefined ) { gaugeAppendText        = this.defaultGaugeAppendText;             } else { gaugeAppendText        = this.config.utilities.devices[c].gaugeAppendText;        }
+        if ( this.config.utilities.devices[c].gaugeWidth             == undefined ) { gaugeWidth             = this.defaultGaugeWidth;                  } else { gaugeWidth             = this.config.utilities.devices[c].gaugeWidth;             }
+        if ( this.config.utilities.devices[c].lineWidth              == undefined ) { lineWidth              = this.defaultGaugeLineWidth;              } else { lineWidth              = this.config.utilities.devices[c].lineWidth;              }
+        if ( this.config.utilities.devices[c].markerWidth            == undefined ) { markerWidth            = this.defaultGaugeMarkerWidth;            } else { markerWidth            = this.config.utilities.devices[c].markerWidth;            }
+        if ( this.config.utilities.devices[c].markerColor            == undefined ) { markerColor            = this.defaultGaugeMarkerColor;            } else { markerColor            = this.config.utilities.devices[c].markerColor;            }
       }
     }
 
@@ -841,7 +844,7 @@ getUtilities: function(devices) {
       var returnUsageValue = parseInt(devices[d].returnUsage.replace(" Watt", ""));
       var counterTodayTemp = parseFloat(devices[d].counterToday.replace(" kWh", "")) - parseFloat(devices[d].returnToday.replace(" kWh", ""));
       var counterToday     = counterTodayTemp.toFixed(1);
-      var counterTodayText = counterTodayLabel + " " + counterToday + " " + gaugeAppendText;
+      var counterTodayText = counterTodayLabel + " " + counterToday + " " + counterTodayAppendText;
       var nettoUsage       = usageValue - returnUsageValue;
       var usageGaugeResult = this.getGauge( devices[d].idx, nettoUsage, counterTodayText, gaugeMinValue, gaugeMaxValue, gaugeAppendText, gaugeWidth, lineWidth, markerWidth, markerColor );
 
@@ -1464,6 +1467,6 @@ getButtons: function() {
      wrapper.appendChild(pageSelectButton);
    }
 
-	return wrapper;
+	 return wrapper;
  },
 });
