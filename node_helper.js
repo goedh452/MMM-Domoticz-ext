@@ -17,8 +17,7 @@ module.exports = NodeHelper.create({
               var jsonData = JSON.parse(this.responseText);
               self.sendSocketNotification(payload.returnNotification,  { data: jsonData, roomID: payload.roomID });
             } else {
-              Log.error(self.name + ": Could not load data.");
-              console.log("Did not load data");
+              console.error("MMM-Domoticz_ext: Could not load data. Returnstatus: " + this.status);
             }
           };
         }
@@ -32,8 +31,7 @@ module.exports = NodeHelper.create({
             if (this.status === 200) {
               //Done
             } else {
-              Log.error(self.name + ": Could not load data.");
-              console.log("Action not executed");
+              console.error("MMM-Domoticz_ext: Action not executed.");
             }
           };
         }
