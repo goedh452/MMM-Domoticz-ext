@@ -69,6 +69,7 @@
                 if(t.children("b").length === 0){
                     $("<b></b>").appendTo(t).html(option.label).css({
                         "line-height": option.size + 5 * a + "px",
+                        "font-family": "Roboto Condensed",
                         color: option.label_color
                     });
                 }
