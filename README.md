@@ -15,9 +15,9 @@ A highly configurable module for displaying domoticz information and performing 
 
 ## Installation
 
-1. Navigate into your MagicMirror `modules` folder and execute<br>
-`git clone https://github.com/goedh452/MMM-Domoticz-ext.git`.
-2. Add the module to you config (see below)
+1. Navigate into your MagicMirror `modules` folder and execute
+2. `git clone https://github.com/goedh452/MMM-Domoticz-ext.git`
+3. Add the module to you config (see below)
 
 
 ## Configuration
