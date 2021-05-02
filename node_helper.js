@@ -45,6 +45,14 @@ module.exports = NodeHelper.create({
           };
         }
         requestData.open("GET", payload.url, true);
+
+        // Send authentication headers
+        if ( payload.authentication != "" ) {
+          let buff = Buffer.from(payload.authentication);
+          let base64data = buff.toString('base64');
+          requestData.setRequestHeader("Authorization", "Basic " + base64data);
+        }
+        
         requestData.send();
     }
   },
