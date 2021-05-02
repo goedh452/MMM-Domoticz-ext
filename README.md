@@ -51,6 +51,8 @@ With the config parameter `alwaysShowActions` it is possible to always display t
 | --- | --- | --- |
 | `apiIP` | IP address of Domoticz | N/A |
 | `apiPort` | Domoticz port | N/A |
+| `apiUser` | User for basic authentication of Domoticz | N/A |
+| `apiPW` | Password for basic authentication of Domoticz | N/A |
 | `updateInterval` | Time in seconds between status checks (if you have a lot of devices, do not set this value too low | `10` |
 | `animationSpeed` | Time fade-out/fade-in when DOM is refreshed. With many updates, 0 is the best value. | `0` |
 | `displayType` | Set layout for the module (see above for possible values) | `both` |
