@@ -4,6 +4,8 @@ Module.register("MMM-Domoticz-ext",{
 	defaults: {
 		apiBase: "",
 		apiPort: "",
+    apiUser: "",
+    apihPW: "",
 		updateInterval: 10,
 		animationSpeed: 0,
     displayType: "both",
@@ -94,6 +96,11 @@ Module.register("MMM-Domoticz-ext",{
   // Usage       - dummy SwitchTypeVal: 93
 
   domo: "",
+  basicURL: "",
+  allRoomURLSuffix: "/json.htm?type=plans&order=name&used=true",
+  roomURLSuffix: "/json.htm?type=devices&used=true&order=Name&plan=",
+  deviceURLSuffix: "/json.htm?type=devices&rid=",
+  authentication: "",
   displayType: "",
 	supportedDevices: [0, 2, 3, 6, 7, 8, 11, 13, 16, 19, 20],
 	supportedTypeDevices: ["Temp", "Temp + Humidity", "Lux"],
@@ -144,6 +151,11 @@ Module.register("MMM-Domoticz-ext",{
 		this.displayType = this.config.displayType,
 		this.loaded = false;
 
+    this.basicURL = "http://" + this.config.apiBase + ":" + this.config.apiPort
+
+    // Build authentication string
+    if ( this.config.apiUser != "" ) { this.authentication = this.config.apiUser + ":" + this.config.apihPW; }
+
     // Check for config errors
     if ( this.config.rooms.length == 0
       && this.config.dashboardRooms.length == 0
@@ -175,8 +187,8 @@ Module.register("MMM-Domoticz-ext",{
     this.utilityCount = this.config.utilities.devices.length;
     this.weatherCount = this.config.weather.devices.length;
 
-		var roomUrl = "http://" + this.config.apiBase + ":" + this.config.apiPort + "/json.htm?type=plans&order=name&used=true";
-		this.sendSocketNotification("MMM-DOMO-GET-DATA", {url: roomUrl, returnNotification: "MMM-DOMO-ROOMS-SEND-" + this.identifier});
+		var roomUrl = this.basicURL + this.allRoomURLSuffix;
+		this.sendSocketNotification("MMM-DOMO-GET-DATA", {url: roomUrl, returnNotification: "MMM-DOMO-ROOMS-SEND-" + this.identifier, authentication: this.authentication });
 		this.update();
 
 		// Schedule update interval
@@ -215,31 +227,31 @@ Module.register("MMM-Domoticz-ext",{
 
 		for ( var r = 0; r < this.config.rooms.length; r++ ) {
 			// Get device info per room
-			var deviceUrl = "http://" + this.config.apiBase + ":" + this.config.apiPort + "/json.htm?type=devices&used=true&order=Name&plan=" + this.config.rooms[r].idx;
-			this.sendSocketNotification("MMM-DOMO-GET-DATA", {url: deviceUrl, returnNotification: "MMM-DOMO-DEVICES-SEND-" + this.identifier, roomID: this.config.rooms[r].idx});
+			var deviceUrl = this.basicURL + this.roomURLSuffix + this.config.rooms[r].idx;
+			this.sendSocketNotification("MMM-DOMO-GET-DATA", { url: deviceUrl, returnNotification: "MMM-DOMO-DEVICES-SEND-" + this.identifier, roomID: this.config.rooms[r].idx, authentication: this.authentication });
 		}
 
     if ( this.config.dashboardRooms.length > 0 ) {
       for ( var db = 0; db < this.config.dashboardRooms.length; db++ ) {
   			// Get device info per dashboard room
-  			var deviceDbUrl = "http://" + this.config.apiBase + ":" + this.config.apiPort + "/json.htm?type=devices&used=true&order=Name&plan=" + this.config.dashboardRooms[db];
-  			this.sendSocketNotification("MMM-DOMO-GET-DATA", {url: deviceDbUrl, returnNotification: "MMM-DOMO-DBDEVICES-SEND-"  + this.identifier, roomID: this.config.dashboardRooms[db]});
+  			var deviceDbUrl = this.basicURL + this.roomURLSuffix + this.config.dashboardRooms[db];
+  			this.sendSocketNotification("MMM-DOMO-GET-DATA", { url: deviceDbUrl, returnNotification: "MMM-DOMO-DBDEVICES-SEND-"  + this.identifier, roomID: this.config.dashboardRooms[db], authentication: this.authentication });
   		}
     }
 
     if ( this.config.utilities.devices.length > 0 ) {
       for ( var u = 0; u < this.config.utilities.devices.length; u++ ) {
   			// Get device for utilities
-  			var utilityUrl = "http://" + this.config.apiBase + ":" + this.config.apiPort + "/json.htm?type=devices&rid=" + this.config.utilities.devices[u].idx;
-  			this.sendSocketNotification("MMM-DOMO-GET-DATA", {url: utilityUrl, returnNotification: "MMM-DOMO-UTILITIES-SEND-"  + this.identifier, roomID: -1 });
+  			var utilityUrl = this.basicURL + this.deviceURLSuffix + this.config.utilities.devices[u].idx;
+  			this.sendSocketNotification("MMM-DOMO-GET-DATA", { url: utilityUrl, returnNotification: "MMM-DOMO-UTILITIES-SEND-"  + this.identifier, roomID: -1, authentication: this.authentication });
   		}
     }
 
     if ( this.config.weather.devices.length > 0 ) {
       for ( var w = 0; w < this.config.weather.devices.length; w++ ) {
         // Get device for weather
-        var weatherUrl = "http://" + this.config.apiBase + ":" + this.config.apiPort + "/json.htm?type=devices&rid=" + this.config.weather.devices[w];
-        this.sendSocketNotification("MMM-DOMO-GET-DATA", {url: weatherUrl, returnNotification: "MMM-DOMO-WEATHER-SEND-"  + this.identifier, roomID: -1 });
+        var weatherUrl = this.basicURL + this.deviceURLSuffix + this.config.weather.devices[w];
+        this.sendSocketNotification("MMM-DOMO-GET-DATA", { url: weatherUrl, returnNotification: "MMM-DOMO-WEATHER-SEND-"  + this.identifier, roomID: -1, authentication: this.authentication });
       }
     }
 	},
