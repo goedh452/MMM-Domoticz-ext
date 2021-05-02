@@ -9,6 +9,7 @@ module.exports = NodeHelper.create({
 
   socketNotificationReceived: function (notification, payload) {
     self = this;
+
     if (notification == "MMM-DOMO-GET-DATA") {
         var requestData = new XMLHttpRequest();
         requestData.onreadystatechange = function() {
@@ -22,6 +23,14 @@ module.exports = NodeHelper.create({
           };
         }
         requestData.open("GET", payload.url, true);
+
+        // Send authentication headers
+        if ( payload.authentication != "" ) {
+          let buff = Buffer.from(payload.authentication);
+          let base64data = buff.toString('base64');
+          requestData.setRequestHeader("Authorization", "Basic " + base64data);
+        }
+
         requestData.send();
 
     } else if (notification == "MMM-DOMO-ACTION") {
