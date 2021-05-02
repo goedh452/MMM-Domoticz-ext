@@ -1275,7 +1275,7 @@ getActions: function() {
     actionDiv.innerHTML  = this.config.actions[a].label;
 
     actionDiv.addEventListener("click", (e) =>  {
-      this.sendSocketNotification ("MMM-DOMO-ACTION", { url: this.config.actions[a].url })
+      this.sendSocketNotification ("MMM-DOMO-ACTION", { url: this.config.actions[a].url, authentication: this.authentication })
     });
 
     actionCell.appendChild(actionDiv);
