@@ -5,7 +5,7 @@ Module.register("MMM-Domoticz-ext",{
 		apiBase: "",
 		apiPort: "",
     apiUser: "",
-    apihPW: "",
+    apiPW: "",
 		updateInterval: 10,
 		animationSpeed: 0,
     displayType: "both",
