@@ -49,7 +49,7 @@ With the config parameter `alwaysShowActions` it is possible to always display t
 ### Config
 | Key | Description | Default |
 | --- | --- | --- |
-| `apiIP` | IP address of Domoticz | N/A |
+| `apiBase` | IP address of Domoticz | N/A |
 | `apiPort` | Domoticz port | N/A |
 | `apiUser` | User for basic authentication of Domoticz | N/A |
 | `apiPW` | Password for basic authentication of Domoticz | N/A |
