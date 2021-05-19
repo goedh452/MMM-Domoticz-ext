@@ -154,7 +154,7 @@ Module.register("MMM-Domoticz-ext",{
     this.basicURL = "http://" + this.config.apiBase + ":" + this.config.apiPort
 
     // Build authentication string
-    if ( this.config.apiUser != "" ) { this.authentication = this.config.apiUser + ":" + this.config.apihPW; }
+    if ( this.config.apiUser != "" ) { this.authentication = this.config.apiUser + ":" + this.config.apiPW; }
 
     // Check for config errors
     if ( this.config.rooms.length == 0
