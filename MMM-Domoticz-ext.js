@@ -62,6 +62,11 @@ Module.register("MMM-Domoticz-ext",{
       showLabel: true,
       devices: [],
     },
+    customGauges: {
+      headerLabel: "Custom",
+      showLabel: true,
+      devices: [],
+    },
     weather: {
       devices: [],
       weatherLabel: "Weather",
@@ -110,6 +115,8 @@ Module.register("MMM-Domoticz-ext",{
 	roomsProcessed: 0,
   utilityCount: 0,
   utilitiesProcessed: 0,
+  gaugesCount: 0,
+  gaugesProcessed: 0,
   weatherCount: 0,
   weatherProcessed: 0,
 	rooms: [],
@@ -128,6 +135,7 @@ Module.register("MMM-Domoticz-ext",{
   lux: [],
   usage: [],
   utilities: [],
+  gauges: [],
   weather: [],
   intervalID: null,
   baroMin: 950,
@@ -160,8 +168,9 @@ Module.register("MMM-Domoticz-ext",{
     if ( this.config.rooms.length == 0
       && this.config.dashboardRooms.length == 0
       && this.config.utilities.devices.length == 0
+      && this.config.customGauges.devices.length == 0
       && this.config.weather.devices.length == 0 ) {
-        this.loadingMessage = "Specify room(s), dashboardsroom(s), utility device(s) and/or weather device(s) in config.json";
+        this.loadingMessage = "Specify room(s), dashboardsroom(s), utility device(s), custom gauges and/or weather device(s) in config.json";
         this.updateDom(this.animationSpeed);
     } else if ( this.config.floors.length > 0 && this.config.rooms.length == 0 ) {
         this.loadingMessage = "Specify room(s) to use floors in config.json";
@@ -171,6 +180,8 @@ Module.register("MMM-Domoticz-ext",{
     // Set undefined config variables to defaults
     if (this.config.utilities.utilityLabel          == undefined) { this.config.utilities.utilityLabel          = this.defaults.utilities.utilityLabel;          }
     if (this.config.utilities.showLabel             == undefined) { this.config.utilities.showLabel             = this.defaults.utilities.showLabel;             }
+    if (this.config.customGauges.headerLabel        == undefined) { this.config.customGauges.headerLabel        = this.defaults.customGauges.headerLabel;        }
+    if (this.config.customGauges.showLabel          == undefined) { this.config.customGauges.showLabel          = this.defaults.customGauges.showLabel;          }
     if (this.config.weather.weatherLabel            == undefined) { this.config.weather.weatherLabel            = this.defaults.weather.weatherLabel;            }
     if (this.config.weather.gaugeWidth              == undefined) { this.config.weather.gaugeWidth              = this.defaults.weather.gaugeWidth;              }
     if (this.config.weather.lineWidth               == undefined) { this.config.weather.lineWidth               = this.defaults.weather.lineWidth;               }
@@ -185,10 +196,11 @@ Module.register("MMM-Domoticz-ext",{
 
 		this.roomCount    = this.config.rooms.length + this.config.dashboardRooms.length;
     this.utilityCount = this.config.utilities.devices.length;
+    this.gaugesCount  = this.config.customGauges.devices.length;
     this.weatherCount = this.config.weather.devices.length;
 
 		var roomUrl = this.basicURL + this.allRoomURLSuffix;
-		this.sendSocketNotification("MMM-DOMO-GET-DATA", {url: roomUrl, returnNotification: "MMM-DOMO-ROOMS-SEND-" + this.identifier, authentication: this.authentication });
+		this.sendSocketNotification("MMM-DOMO-GET-DATA", {url: roomUrl, returnNotification: "MMM-DOMO-ROOMS-SEND-" + this.identifier, authentication: this.authentication, roomID: -1, configID: -1 });
 		this.update();
 
 		// Schedule update interval
@@ -220,22 +232,24 @@ Module.register("MMM-Domoticz-ext",{
 		this.devices.length          = 0;
     this.dashboardDevices.length = 0;
     this.utilities.length        = 0;
+    this.gauges.length           = 0;
     this.weather.length          = 0;
 		this.roomsProcessed          = 0;
     this.utilitiesProcessed      = 0;
+    this.gaugesProcessed         = 0;
     this.weatherProcessed        = 0;
 
 		for ( var r = 0; r < this.config.rooms.length; r++ ) {
 			// Get device info per room
 			var deviceUrl = this.basicURL + this.roomURLSuffix + this.config.rooms[r].idx;
-			this.sendSocketNotification("MMM-DOMO-GET-DATA", { url: deviceUrl, returnNotification: "MMM-DOMO-DEVICES-SEND-" + this.identifier, roomID: this.config.rooms[r].idx, authentication: this.authentication });
+			this.sendSocketNotification("MMM-DOMO-GET-DATA", { url: deviceUrl, returnNotification: "MMM-DOMO-DEVICES-SEND-" + this.identifier, roomID: this.config.rooms[r].idx, authentication: this.authentication, configID: -1 });
 		}
 
     if ( this.config.dashboardRooms.length > 0 ) {
       for ( var db = 0; db < this.config.dashboardRooms.length; db++ ) {
   			// Get device info per dashboard room
   			var deviceDbUrl = this.basicURL + this.roomURLSuffix + this.config.dashboardRooms[db];
-  			this.sendSocketNotification("MMM-DOMO-GET-DATA", { url: deviceDbUrl, returnNotification: "MMM-DOMO-DBDEVICES-SEND-"  + this.identifier, roomID: this.config.dashboardRooms[db], authentication: this.authentication });
+  			this.sendSocketNotification("MMM-DOMO-GET-DATA", { url: deviceDbUrl, returnNotification: "MMM-DOMO-DBDEVICES-SEND-"  + this.identifier, roomID: this.config.dashboardRooms[db], authentication: this.authentication, configID: -1 });
   		}
     }
 
@@ -243,7 +257,15 @@ Module.register("MMM-Domoticz-ext",{
       for ( var u = 0; u < this.config.utilities.devices.length; u++ ) {
   			// Get device for utilities
   			var utilityUrl = this.basicURL + this.deviceURLSuffix + this.config.utilities.devices[u].idx;
-  			this.sendSocketNotification("MMM-DOMO-GET-DATA", { url: utilityUrl, returnNotification: "MMM-DOMO-UTILITIES-SEND-"  + this.identifier, roomID: -1, authentication: this.authentication });
+  			this.sendSocketNotification("MMM-DOMO-GET-DATA", { url: utilityUrl, returnNotification: "MMM-DOMO-UTILITIES-SEND-"  + this.identifier, roomID: -1, authentication: this.authentication, configID: u });
+  		}
+    }
+
+    if ( this.config.customGauges.devices.length > 0 ) {
+      for ( var c = 0; c < this.config.customGauges.devices.length; c++ ) {
+  			// Get device for custom gauges
+  			var gaugeUrl = this.basicURL + this.deviceURLSuffix + this.config.customGauges.devices[c].idx;
+  			this.sendSocketNotification("MMM-DOMO-GET-DATA", { url: gaugeUrl, returnNotification: "MMM-DOMO-GAUGES-SEND-"  + this.identifier, roomID: -1, authentication: this.authentication, configID: c });
   		}
     }
 
@@ -251,7 +273,7 @@ Module.register("MMM-Domoticz-ext",{
       for ( var w = 0; w < this.config.weather.devices.length; w++ ) {
         // Get device for weather
         var weatherUrl = this.basicURL + this.deviceURLSuffix + this.config.weather.devices[w];
-        this.sendSocketNotification("MMM-DOMO-GET-DATA", { url: weatherUrl, returnNotification: "MMM-DOMO-WEATHER-SEND-"  + this.identifier, roomID: -1, authentication: this.authentication });
+        this.sendSocketNotification("MMM-DOMO-GET-DATA", { url: weatherUrl, returnNotification: "MMM-DOMO-WEATHER-SEND-"  + this.identifier, roomID: -1, authentication: this.authentication, configID: w });
       }
     }
 	},
@@ -346,9 +368,15 @@ Module.register("MMM-Domoticz-ext",{
         if ( jsonUtilities[0].CounterDeliv      != undefined ) { returnUsage = jsonUtilities[0].CounterDeliv;      }
         if ( this.supportedEnergyDevices.includes(jsonUtilities[0].SubType) ) { subType = "Energy"; }
 
-        var utility = { idx: jsonUtilities[0].idx, name: jsonUtilities[0].Name, subType: subType, counter:jsonUtilities[0].Counter, counterToday: jsonUtilities[0].CounterToday, return: returnUsage, returnToday: returnToday, usage: jsonUtilities[0].Usage, returnUsage: returnNow };
+        var utility = { idx: jsonUtilities[0].idx, name: jsonUtilities[0].Name, subType: subType, counter:jsonUtilities[0].Counter, counterToday: jsonUtilities[0].CounterToday, return: returnUsage, returnToday: returnToday, usage: jsonUtilities[0].Usage, returnUsage: returnNow, configID: payload.configID };
         this.utilities.push(utility);
         this.utilitiesProcessed += 1;
+
+      } else if (notification == "MMM-DOMO-GAUGES-SEND-" + this.identifier) {
+        var jsonGauges = payload.data.result;
+        var gauge = { idx: jsonGauges[0].idx, name: jsonGauges[0].Name, value: jsonGauges[0].Data, configID: payload.configID };
+        this.gauges.push(gauge);
+        this.gaugesProcessed += 1;
 
       } else if (notification == "MMM-DOMO-WEATHER-SEND-" + this.identifier) {
 				var jsonWeather = payload.data.result;
@@ -360,13 +388,14 @@ Module.register("MMM-Domoticz-ext",{
         else if ( jsonWeather[0].Type      == "Wind"      ) { type = "wind";      }
         else    { type = "temperature"; }
 
-        var weatherDevice = { name: jsonWeather[0].Name, type: type, direction: jsonWeather[0].Direction, directionString: jsonWeather[0].DirectionStr, speed: jsonWeather[0].Speed, rain: jsonWeather[0].Rain, barometer: jsonWeather[0].Barometer, baroForecast: jsonWeather[0].ForecastStr, temperature: jsonWeather[0].Temp, humidity: jsonWeather[0].Humidity, humidityStatus: jsonWeather[0].HumidityStatus, icon: this.domo.getIcon(type), iconClass: this.domo.getIconClass(type) };
+        var weatherDevice = { name: jsonWeather[0].Name, type: type, direction: jsonWeather[0].Direction, directionString: jsonWeather[0].DirectionStr, speed: jsonWeather[0].Speed, rain: jsonWeather[0].Rain, barometer: jsonWeather[0].Barometer, baroForecast: jsonWeather[0].ForecastStr, temperature: jsonWeather[0].Temp, humidity: jsonWeather[0].Humidity, humidityStatus: jsonWeather[0].HumidityStatus, icon: this.domo.getIcon(type), iconClass: this.domo.getIconClass(type), configID: payload.configID };
         this.weather.push(weatherDevice);
         this.weatherProcessed += 1;
       }
-      if ( ( this.roomsProcessed == this.roomCount )
-        && ( this.utilitiesProcessed == this.utilityCount || this.config.utilities.devices.length == 0 )
-        && ( this.weatherProcessed == this.weatherCount   || this.config.weather.devices.length == 0 ) ) {
+      if ( ( this.roomsProcessed     == this.roomCount )
+        && ( this.utilitiesProcessed == this.utilityCount  || this.config.utilities.devices.length    == 0 )
+        && ( this.gaugesProcessed    == this.gaugesCount   || this.config.customGauges.devices.length == 0 )
+        && ( this.weatherProcessed   == this.weatherCount  || this.config.weather.devices.length      == 0 ) ) {
           this.loaded = true;
           this.updateDom(this.config.animationSpeed);
         }
@@ -813,8 +842,12 @@ getUtilities: function(devices) {
   var tableRow = document.createElement("tr");
   table.className = "small";
 
-  for ( d in devices ) {
+  // Sort array by order of the config file
+  devices.sort((a, b) => {
+    return a.configID - b.configID;
+  });
 
+  for ( d in devices ) {
     // Get config properties for device
     for ( var c = 0; c < this.config.utilities.devices.length; c++ ) {
       if ( devices[d].idx == this.config.utilities.devices[c].idx ) {
@@ -937,6 +970,105 @@ getUtilities: function(devices) {
   return utTable;
 },
 
+getGauges: function(devices) {
+  var gTable  = document.createElement("table");
+  var gRow    = document.createElement("tr");
+  var gCell   = document.createElement("td");
+  var gDiv    = document.createElement("div");
+  var title   = document.createElement("p");
+  var divider = document.createElement("hr");
+
+  gTable.className =  "small";
+  title.className   =  "title bright domoCenterCell";
+
+  if (this.config.customGauges.showLabel) {
+    divider.className += " domoDivider"
+    title.innerHTML   =  this.config.customGauges.headerLabel;
+
+    gDiv.appendChild(title);
+    gDiv.appendChild(divider);
+  }
+
+  var table    = document.createElement("table");
+  var tableRow = document.createElement("tr");
+  table.className = "small";
+
+  // Sort array by order of the config file
+  devices.sort((a, b) => {
+    return a.configID - b.configID;
+  });
+
+  for ( d in devices ) {
+    var deviceHeader           = devices[d].name;
+    var useHeaderSymbol        = false;
+    var headerSymbol           = "";
+    var counterTodayLabel      = "";
+    var gaugeMinValue          = 0;
+    var gaugeMaxValue          = 1000;
+    var gaugeAppendText        = "";
+    var gaugeWidth             = 200;
+    var lineWidth              = 16;
+    var markerWidth            = 16;
+    var markerColor            = "#F4D03F";
+    var dataReplaceText        = "";
+
+    // Get config properties for device
+    for ( var c = 0; c < this.config.customGauges.devices.length; c++ ) {
+      if ( devices[d].idx == this.config.customGauges.devices[c].idx ) {
+        if ( this.config.customGauges.devices[c].deviceHeader           != undefined ) { deviceHeader           = this.config.customGauges.devices[c].deviceHeader;           }
+        if ( this.config.customGauges.devices[c].useHeaderSymbol        != undefined ) { useHeaderSymbol        = this.config.customGauges.devices[c].useHeaderSymbol;        }
+        if ( this.config.customGauges.devices[c].headerSymbol           != undefined ) { headerSymbol           = this.config.customGauges.devices[c].headerSymbol;           }
+        if ( this.config.customGauges.devices[c].lowerText              != undefined ) { counterTodayLabel      = this.config.customGauges.devices[c].lowerText;              }
+        if ( this.config.customGauges.devices[c].gaugeMinValue          != undefined ) { gaugeMinValue          = this.config.customGauges.devices[c].gaugeMinValue;          }
+        if ( this.config.customGauges.devices[c].gaugeMaxValue          != undefined ) { gaugeMaxValue          = this.config.customGauges.devices[c].gaugeMaxValue;          }
+        if ( this.config.customGauges.devices[c].gaugeAppendText        != undefined ) { gaugeAppendText        = this.config.customGauges.devices[c].gaugeAppendText;        }
+        if ( this.config.customGauges.devices[c].gaugeWidth             != undefined ) { gaugeWidth             = this.config.customGauges.devices[c].gaugeWidth;             }
+        if ( this.config.customGauges.devices[c].lineWidth              != undefined ) { lineWidth              = this.config.customGauges.devices[c].lineWidth;              }
+        if ( this.config.customGauges.devices[c].markerWidth            != undefined ) { markerWidth            = this.config.customGauges.devices[c].markerWidth;            }
+        if ( this.config.customGauges.devices[c].markerColor            != undefined ) { markerColor            = this.config.customGauges.devices[c].markerColor;            }
+        if ( this.config.customGauges.devices[c].dataReplaceText        != undefined ) { dataReplaceText        = this.config.customGauges.devices[c].dataReplaceText;        }
+      }
+    }
+
+    var tableCell    = document.createElement("td");
+    var tableGauge   = document.createElement("table");
+    var rowGauge     = document.createElement("tr");
+    var rowUsage     = document.createElement("tr");
+    var cellName     = document.createElement("td");
+    var cellUsage    = document.createElement("td");
+
+    tableGauge.className = "small";
+
+    if ( useHeaderSymbol ) {
+      cellName.className = "fa fa-" + headerSymbol;
+    } else {
+      cellName.className   = "title bright gaugeAlign";
+      cellUsage.className  = "gaugeAlign";
+      cellName.innerHTML    = deviceHeader;
+    }
+
+    // Build gauge
+    var gaugeValue  = parseInt(devices[d].value.replace(" " + dataReplaceText, ""));
+    var gaugeResult = this.getGauge( devices[d].idx, gaugeValue, counterTodayLabel, gaugeMinValue, gaugeMaxValue, gaugeAppendText, gaugeWidth, lineWidth, markerWidth, markerColor );
+
+    cellUsage.appendChild(gaugeResult);
+    rowGauge.appendChild(cellName);
+    rowUsage.appendChild(cellUsage);
+    tableGauge.appendChild(rowGauge);
+    tableGauge.appendChild(rowUsage);
+    tableCell.appendChild(tableGauge);
+    tableRow.appendChild(tableCell);
+  }
+
+  table.appendChild(tableRow);
+  gDiv.appendChild(table)
+  gCell.appendChild(gDiv);
+  gRow.appendChild(gCell);
+  gTable.appendChild(gRow);
+
+  return gTable;
+},
+
 getGauge: function( idx, usage, counterTodayText, gaugeMinValue, gaugeMaxValue, gaugeAppendText, gaugeWidth, lineWidth, markerWidth, markerColor ) {
 
   // Variables for usage
@@ -1007,6 +1139,11 @@ getWeather: function(devices) {
   Number.prototype.map = function (in_min, in_max, out_min, out_max) {
     return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
   }
+
+  // Sort array by order of the config file
+  devices.sort((a, b) => {
+    return a.configID - b.configID;
+  });
 
   for (d in devices) {
     if (devices[d].type == "wind") {
@@ -1421,6 +1558,14 @@ getButtons: function() {
      var masterCellUt = document.createElement("td");
      masterCellUt.appendChild(utilityTable);
      masterRowUtWe.appendChild(masterCellUt);
+   }
+
+   // Get custom gauge layout
+   if ( this.gauges.length > 0 ) {
+     var gaugeTable = this.getGauges(this.gauges);
+     var masterCellG = document.createElement("td");
+     masterCellG.appendChild(gaugeTable);
+     masterRowUtWe.appendChild(masterCellG);
    }
 
    // Get weather layout
