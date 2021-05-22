@@ -139,7 +139,31 @@ With the config parameter `alwaysShowActions` it is possible to always display t
 | `counterTodayAppendText` | Text to append to the counter today (for energy only) | `kWh` |
 | `gaugeMinValue` | Minimum value of the gauge; supports return for energy: negative values are allowed | `0` |
 | `gaugeMaxValue` | Maximum value of the gauge | `3000` |
-| `gaugeAppendText` | Text to append to the gauge value (e.g. kWh of liter) | N/A |
+| `gaugeAppendText` | Text to append to the gauge value (e.g. kWh or liter) | N/A |
+| `gaugeWidth` | Display width of the gauge | `200` |
+| `gaugeLineWidth` | Width of the gauge line | `16` |
+| `gaugeMarkerWidth` | Width of the gauge marker indicating the value | `16` |
+| `gaugeMarkerColor` | Color of the gauge marker indicating the value | `#F4D03F` |
+
+### Custom gauges
+| Key | Description | Default |
+| --- | --- | --- |
+| `headerLabel` | Header for the utilities layout | `Utilities` |
+| `showLabel` | Display header label | `true` |
+| `devices` | Array of devices; see below for config options | N/A |
+
+#### Custom gauge devices
+| Key | Description | Default |
+| --- | --- | --- |
+| `idx` | IDX of the device to display (expects a string) | N/A |
+| `deviceHeader` | Header for the specific device | N/A |
+| `useHeaderSymbol` | Use a symbol of Font Awesome as header | `false` |
+| `headerSymbol` | Font Awesome symbol to display | N/A |
+| `dataReplaceText` | The data-field of the JSON result is used. This is a string from which the value is extracted. This is done by removing the text after the value. Specify the text that has to be removed here withoud a space (e.g. "cm" of "volt"). Find out the correct value by viewing the JSON-result: http://<domoticz-ip>:<domoticz-port>/json.htm?type=devices&rid=<idx> and find the file 'Data'. | `kWh` |
+| `lowerText` | Text to be displayed at the bottom of the gauge (e.g. Today or Voltage) | N/A |
+| `gaugeMinValue` | Minimum value of the gauge; supports return for energy: negative values are allowed | `0` |
+| `gaugeMaxValue` | Maximum value of the gauge | `1000` |
+| `gaugeAppendText` | Text to append to the gauge value (e.g. Volt or cm) | N/A |
 | `gaugeWidth` | Display width of the gauge | `200` |
 | `gaugeLineWidth` | Width of the gauge line | `16` |
 | `gaugeMarkerWidth` | Width of the gauge marker indicating the value | `16` |
