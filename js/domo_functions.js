@@ -21,6 +21,7 @@ class domoFunctions {
         else if ( value == "Sunny"        ) { returnValue = "Zonnig";        }
         else if ( value == "Cloudy"       ) { returnValue = "Bewolkt";       }
         else if ( value == "Unstable"     ) { returnValue = "Instabiel";     }
+        else if ( value == "Rain"         ) { returnValue = "Regen";         }
         else if ( value == "Thunderstorm" ) { returnValue = "Storm";         }
         else if ( value == "Some Clouds"  ) { returnValue = "Enkele wolken"; }
       }
