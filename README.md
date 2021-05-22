@@ -142,9 +142,9 @@ With the config parameter `alwaysShowActions` it is possible to always display t
 | `gaugeMaxValue` | Maximum value of the gauge | `3000` |
 | `gaugeAppendText` | Text to append to the gauge value (e.g. kWh or liter) | N/A |
 | `gaugeWidth` | Display width of the gauge | `200` |
-| `gaugeLineWidth` | Width of the gauge line | `16` |
-| `gaugeMarkerWidth` | Width of the gauge marker indicating the value | `16` |
-| `gaugeMarkerColor` | Color of the gauge marker indicating the value | `#F4D03F` |
+| `lineWidth` | Width of the gauge line | `16` |
+| `markerWidth` | Width of the gauge marker indicating the value | `16` |
+| `markerColor` | Color of the gauge marker indicating the value | `#F4D03F` |
 
 ### Custom gauges
 | Key | Description | Default |
@@ -166,9 +166,9 @@ With the config parameter `alwaysShowActions` it is possible to always display t
 | `gaugeMaxValue` | Maximum value of the gauge | `1000` |
 | `gaugeAppendText` | Text to append to the gauge value (e.g. Volt or cm) | N/A |
 | `gaugeWidth` | Display width of the gauge | `200` |
-| `gaugeLineWidth` | Width of the gauge line | `16` |
-| `gaugeMarkerWidth` | Width of the gauge marker indicating the value | `16` |
-| `gaugeMarkerColor` | Color of the gauge marker indicating the value | `#F4D03F` |
+| `lineWidth` | Width of the gauge line | `16` |
+| `markerWidth` | Width of the gauge marker indicating the value | `16` |
+| `markerColor` | Color of the gauge marker indicating the value | `#F4D03F` |
 
 ### Weather
 | Key | Description | Default |
