@@ -8,6 +8,7 @@ A highly configurable module for displaying domoticz information and performing 
 * Switch states per room, type, both or floor
 * Utility information
 * Weather information
+* Custom gauges
 * Buttons to change overview
 * Action buttons to perform actions on domoticz
 * Integration with touch screen and [MMM-Page-Selector](https://github.com/Veldrovive/MMM-Page-Selector)
