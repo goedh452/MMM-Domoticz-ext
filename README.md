@@ -137,6 +137,7 @@ With the config parameter `alwaysShowActions` it is possible to always display t
 | `deviceHeader` | Header for the specific device | N/A |
 | `useHeaderSymbol` | Use a symbol of Font Awesome as header | `false` |
 | `headerSymbol` | Font Awesome symbol to display | N/A |
+| `enableReturn` | Option to ignore return value for electricity | `true` |
 | `counterTodayLabel` | Label for sum of today | `Today` |
 | `counterTodayAppendText` | Text to append to the counter today (for energy only) | `kWh` |
 | `gaugeMinValue` | Minimum value of the gauge; supports return for energy: negative values are allowed | `0` |
