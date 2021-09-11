@@ -2,8 +2,8 @@
 Module.register("MMM-Domoticz-ext",{
 
 	defaults: {
-		apiBase: "",
-		apiPort: "",
+    apiBase: "",
+    apiPort: "",
     apiUser: "",
     apiPW: "",
 		updateInterval: 10,
@@ -143,6 +143,7 @@ Module.register("MMM-Domoticz-ext",{
   loadingMessage: "Loading...",
   defaultGaugeUseHeaderSymbol: false,
   defaultGaugeHeaderSymbol: "",
+  defaultGaugeEnableReturn: true,
   defaultGaugeCounterTodayLabel: "Today",
   defaultGaugeCounterTodayAppendText: "kWh",
   defaultGaugeMinValue: 0,
@@ -180,6 +181,7 @@ Module.register("MMM-Domoticz-ext",{
     // Set undefined config variables to defaults
     if (this.config.utilities.utilityLabel          == undefined) { this.config.utilities.utilityLabel          = this.defaults.utilities.utilityLabel;          }
     if (this.config.utilities.showLabel             == undefined) { this.config.utilities.showLabel             = this.defaults.utilities.showLabel;             }
+    if (this.config.utilities.enableReturn          == undefined) { this.config.utilities.enableReturn          = this.defaults.utilities.enableReturn;          }
     if (this.config.customGauges.headerLabel        == undefined) { this.config.customGauges.headerLabel        = this.defaults.customGauges.headerLabel;        }
     if (this.config.customGauges.showLabel          == undefined) { this.config.customGauges.showLabel          = this.defaults.customGauges.showLabel;          }
     if (this.config.weather.weatherLabel            == undefined) { this.config.weather.weatherLabel            = this.defaults.weather.weatherLabel;            }
@@ -363,7 +365,7 @@ Module.register("MMM-Domoticz-ext",{
         var returnToday   = "0 Watt";
         var returnUsage   = "0 Watt";
 
-        if ( jsonUtilities[0].UsageDeliv        != undefined ) { returnNow  = jsonUtilities[0].UsageDeliv;         }
+        if ( jsonUtilities[0].UsageDeliv        != undefined ) { returnNow   = jsonUtilities[0].UsageDeliv;        }
         if ( jsonUtilities[0].CounterDelivToday != undefined ) { returnToday = jsonUtilities[0].CounterDelivToday; }
         if ( jsonUtilities[0].CounterDeliv      != undefined ) { returnUsage = jsonUtilities[0].CounterDeliv;      }
         if ( this.supportedEnergyDevices.includes(jsonUtilities[0].SubType) ) { subType = "Energy"; }
@@ -817,6 +819,7 @@ getUtilities: function(devices) {
   var deviceHeader           = "";
   var useHeaderSymbol        = false;
   var headerSymbol           = "";
+  var enableReturn           = true;
   var counterTodayLabel      = "";
   var counterTodayAppendText = "kWh";
   var gaugeMinValue          = 0;
@@ -854,6 +857,7 @@ getUtilities: function(devices) {
         if ( this.config.utilities.devices[c].deviceHeader           == undefined ) { deviceHeader           = devices[d].name;                         } else { deviceHeader           = this.config.utilities.devices[c].deviceHeader;           }
         if ( this.config.utilities.devices[c].useHeaderSymbol        == undefined ) { useHeaderSymbol        = this.defaultGaugeUseHeaderSymbol;        } else { useHeaderSymbol        = this.config.utilities.devices[c].useHeaderSymbol;        }
         if ( this.config.utilities.devices[c].headerSymbol           == undefined ) { headerSymbol           = this.defaultGaugeheaderSymbol;           } else { headerSymbol           = this.config.utilities.devices[c].headerSymbol;           }
+        if ( this.config.utilities.devices[c].enableReturn           == undefined ) { enableReturn           = this.defaultGaugeEnableReturn;           } else { enableReturn           = this.config.utilities.devices[c].enableReturn;           }
         if ( this.config.utilities.devices[c].counterTodayLabel      == undefined ) { counterTodayLabel      = this.defaultGaugeCounterTodayLabel;      } else { counterTodayLabel      = this.config.utilities.devices[c].counterTodayLabel;      }
         if ( this.config.utilities.devices[c].counterTodayAppendText == undefined ) { counterTodayAppendText = this.defaultGaugeCounterTodayAppendText; } else { counterTodayAppendText = this.config.utilities.devices[c].counterTodayAppendText; }
         if ( this.config.utilities.devices[c].gaugeMinValue          == undefined ) { gaugeMinValue          = this.defaultGaugeMinValue;               } else { gaugeMinValue          = this.config.utilities.devices[c].gaugeMinValue;          }
@@ -887,10 +891,16 @@ getUtilities: function(devices) {
       // Build gauge
       var usageValue       = parseInt(devices[d].usage.replace(" Watt", ""));
       var returnUsageValue = parseInt(devices[d].returnUsage.replace(" Watt", ""));
-      var counterTodayTemp = parseFloat(devices[d].counterToday.replace(" kWh", "")) - parseFloat(devices[d].returnToday.replace(" kWh", ""));
+      var counterTodayTemp = parseFloat(devices[d].counterToday.replace(" kWh", ""));
       var counterToday     = counterTodayTemp.toFixed(1);
       var counterTodayText = counterTodayLabel + " " + counterToday + " " + counterTodayAppendText;
-      var nettoUsage       = usageValue - returnUsageValue;
+      var nettoUsage       = usageValue;
+      // Calculate return if set in the config
+      if ( enableReturn ) {
+        nettoUsage = nettoUsage - returnUsageValue;
+        counterTodayTemp = counterTodayTemp - parseFloat(devices[d].returnToday.replace(" kWh", ""));
+      }
+      // Build gauge
       var usageGaugeResult = this.getGauge( devices[d].idx, nettoUsage, counterTodayText, gaugeMinValue, gaugeMaxValue, gaugeAppendText, gaugeWidth, lineWidth, markerWidth, markerColor );
 
       cellUsage.appendChild(usageGaugeResult);
