@@ -1,4 +1,4 @@
-# Not maintained anymore
+# !!! Not maintained anymore !!!
 Since I do not use Domoticz anymore, this module is not maintained. Feel free to fork it and make the changes you need.
 
 # MMM-Domoticz-ext
