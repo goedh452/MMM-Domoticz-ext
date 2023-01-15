@@ -70,6 +70,7 @@ Module.register("MMM-Domoticz-ext",{
     weather: {
       devices: [],
       weatherLabel: "Weather",
+      showLabel: true,
       gaugeWidth: 250,
       lineWidth: 20,
       markerWidth: 30,
@@ -185,6 +186,7 @@ Module.register("MMM-Domoticz-ext",{
     if (this.config.customGauges.headerLabel        == undefined) { this.config.customGauges.headerLabel        = this.defaults.customGauges.headerLabel;        }
     if (this.config.customGauges.showLabel          == undefined) { this.config.customGauges.showLabel          = this.defaults.customGauges.showLabel;          }
     if (this.config.weather.weatherLabel            == undefined) { this.config.weather.weatherLabel            = this.defaults.weather.weatherLabel;            }
+    if (this.config.weather.showLabel               == undefined) { this.config.weather.showLabel               = this.defaults.weather.showLabel;               }
     if (this.config.weather.gaugeWidth              == undefined) { this.config.weather.gaugeWidth              = this.defaults.weather.gaugeWidth;              }
     if (this.config.weather.lineWidth               == undefined) { this.config.weather.lineWidth               = this.defaults.weather.lineWidth;               }
     if (this.config.weather.markerWidth             == undefined) { this.config.weather.markerWidth             = this.defaults.weather.markerWidth;             }
@@ -1142,8 +1144,10 @@ getWeather: function(devices) {
   divider.className      += " domoDivider"
   title.innerHTML        =  this.config.weather.weatherLabel;
 
-  weatherDiv.appendChild(title);
-  weatherDiv.appendChild(divider);
+  if (this.config.weather.showLabel) {
+    weatherDiv.appendChild(title);
+    weatherDiv.appendChild(divider);
+  }
 
   // Mappinfg function
   Number.prototype.map = function (in_min, in_max, out_min, out_max) {
